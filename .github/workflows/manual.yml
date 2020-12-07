@@ -1,0 +1,22 @@
+name: manual-build
+on:
+  workflow_dispatch:
+    inputs:
+      os_name:
+        description: 'os name'
+        required: true
+        default: 'macos-10.15'
+
+jobs:
+  clone_and_build_app:
+    runs-on: ${{github.event.inputs.os_name}}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: test read file
+        shell: bash
+        run: |
+          pwd
+          hello=$(cat ./github/hello.txt)
+          echo $hello
