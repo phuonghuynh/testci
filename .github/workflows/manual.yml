@@ -5,7 +5,7 @@ on:
       os_name:
         description: 'os name'
         required: true
-        default: 'macos-10.15'
+        default: 'windows-2019'
 
 jobs:
   clone_and_build_app:
@@ -14,9 +14,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: test read file
-        shell: bash
-        run: |
-          pwd
-          hello=$(cat ./github/hello.txt)
-          echo $hello
+      -  name: setup windows-build-tools
+         if: runner.os == 'Windows'
+         run: npm i windows-build-tools --vs2015
