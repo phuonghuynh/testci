@@ -1,0 +1,9 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "main": "index.js",
+  "gypfile": true,
+  "devDependencies": {
+    "nan": "^2.14.1"
+  }
+}

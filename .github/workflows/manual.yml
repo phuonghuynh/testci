@@ -22,3 +22,7 @@ jobs:
       - name: setup windows-build-tools
         if: runner.os == 'Windows'
         run: npm i -g windows-build-tools --vs2015
+
+      - name: build node native sample
+        run: npm i
+        working-directory: ./src/test

@@ -1,0 +1,9 @@
+/node_modules/*
+/build/*
+/bin/*
+/.vscode/*
+/ext/SpiderMonkey-170/*.db
+/ext/SpiderMonkey-170/*.opendb
+/ext/SpiderMonkey-170/Release/*
+/ext/SpiderMonkey-170/.vs/*
+Release/*
