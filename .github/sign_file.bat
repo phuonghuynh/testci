@@ -12,7 +12,8 @@ if defined SIGNTOOL_ARGS (
 )
 
 :repeat_sign
-    %signtool% sign %sign_args% /i Comodo /fd sha256  /tr http://timestamp.comodoca.com/?td=sha256  /td sha256 /d "test phuonghqh" /v %1
+rem signtool.exe sign  /f C:\Users\admin\Downloads\artifacts(1)\wincodesign.pfx /tr http://timestamp.comodoca.com/?td=sha256 /p P@ssw0rd  /td sha256 c:\Users\admin\Downloads\hello.exe
+    %signtool% sign %sign_args% /tr http://timestamp.comodoca.com/?td=sha256  /td sha256 /v %1
     echo Errorlevel: %errorlevel% Counter: !counter!
 
     if not %errorlevel%==0 (
