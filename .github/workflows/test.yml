@@ -59,7 +59,7 @@ jobs:
         working-directory: .github
         continue-on-error: true
         run: |
-          certutil -user -addstore Root MyCA.cer
+          certutil -f -user -p "${{secrets.WIN_CODESIGN_PASSWORD}}" -importpfx test/exe/wincodesign.pfx NoRoot
           sign_file.bat test/exe/hello.exe
         env:
           SIGNTOOL_ARGS: >
