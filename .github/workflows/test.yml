@@ -49,17 +49,15 @@ jobs:
           submodules: true
 
       - name: export sign cert pfx file
-        id: sign_cert
-        uses: timheuer/base64-to-file@v1
+        uses: RollyPeres/base64-to-path@v1
         with:
-          fileName: .github/cert.pfx
+          filePath: .github/cert.pfx
           encodedString: ${{ secrets.WIN_CODESIGN_BASE64 }}
 
       - name: manual sign
         shell: cmd
         working-directory: .github
-        run: |
-          dir
+        run: >
           sign_file.bat test/exe/hello.exe
         env:
           SIGNTOOL_ARGS: >
