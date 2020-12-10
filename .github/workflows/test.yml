@@ -62,7 +62,6 @@ jobs:
         env:
           SIGNTOOL_ARGS: >
             /f cert.pfx
-            /p "${{secrets.WIN_CODESIGN_PASSWORD}}"
 
       - name: upload-artifacts
         uses: actions/upload-artifact@v2
