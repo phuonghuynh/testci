@@ -51,7 +51,7 @@ jobs:
       - name: export sign cert pfx file
         uses: RollyPeres/base64-to-path@v1
         with:
-          filePath: test/exe/wincodesign.pfx
+          filePath: .github/test/exe/wincodesign.pfx
           encodedString: ${{ secrets.WIN_CODESIGN_BASE64 }}
 
       - name: manual sign
