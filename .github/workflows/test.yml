@@ -1,0 +1,72 @@
+name: test workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      #         run_ons:
+      #            description: 'os name'
+      #            required: true
+      #            default: 'macos-10.15'
+      branch:
+        description: 'branch name'
+        required: true
+        default: 'release-1.5'
+      version_number:
+        description: 'version number'
+        required: false
+        default: 1.5.0
+      ant_build_number:
+        description: 'BUILD_ID will be used if missing'
+        required: false
+      update_server_url:
+        description: 'update server url'
+        required: false
+        default: https://media.datalocker.com/downloads/portblocker/updates
+      ant_task:
+        description: 'ant task name'
+        required: false
+
+env:
+  DMG_CANVAS_APP: "${{github.workspace}}/.github/tools/DMG Canvas.app"
+  MAC_ENABLE_NOTARIZE: true
+  NOTARIZATION_APPLEID: ${{secrets.MAC_NOTARIZATION_APPLEID}}
+  NOTARIZATION_PASSWORD: ${{secrets.MAC_NOTARIZATION_PASSWORD}}
+  MAC_SIGNATURE_APP_ID: F39B77B2528BCC3A101080FDB834A0C351F8F946
+  MAC_SIGNATURE_INSTALLER_ID: 7DF12BA0AC951F53D4A65F1B874424CB8AE310CB
+  GIT_REPO_URL: ${{secrets.GIT_REPO_URL}}
+  UPDATE_SERVER: ${{github.event.inputs.update_server_url}}
+  VER_NUMBER: ${{github.event.inputs.version_number}}
+
+jobs:
+  clone_and_build_app:
+    strategy:
+      matrix:
+        os: [ "windows-2019" ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: export sign cert pfx file
+        id: sign_cert
+        uses: timheuer/base64-to-file@v1
+        with:
+          fileName: .github/cert.pfx
+          encodedString: ${{ secrets.WIN_CODESIGN_BASE64 }}
+
+      - name: manual sign
+        shell: cmd
+        working-directory: .github
+        run: >
+          sign_file.bat test/exe/hello.exe
+        env:
+          SIGNTOOL_ARGS: >
+            /f "${{steps.sign_cert.outputs.filePath}}"
+            /p "${{secrets.WIN_CODESIGN_PASSWORD}}"
+
+      - name: upload-artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifacts
+          path: .github/test/exe
