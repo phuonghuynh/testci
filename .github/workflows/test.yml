@@ -57,12 +57,14 @@ jobs:
       - name: manual sign
         shell: cmd
         working-directory: .github
-        run: >
+        continue-on-error: true
+        run: |
+          copy wincodesign.pfx test/exe
           sign_file.bat test/exe/hello.exe
         env:
           SIGNTOOL_ARGS: >
-            /f wincodesign.pfx
-            /p ${{secrets.WIN_CODESIGN_PASSWORD}}
+            /f "wincodesign.pfx"
+            /p "${{secrets.WIN_CODESIGN_PASSWORD}}"
 
       - name: upload-artifacts
         uses: actions/upload-artifact@v2
