@@ -51,7 +51,7 @@ jobs:
       - name: export sign cert pfx file
         uses: RollyPeres/base64-to-path@v1
         with:
-          filePath: .github/wincodesign.pfx
+          filePath: test/exe/wincodesign.pfx
           encodedString: ${{ secrets.WIN_CODESIGN_BASE64 }}
 
       - name: manual sign
@@ -59,11 +59,10 @@ jobs:
         working-directory: .github
         continue-on-error: true
         run: |
-          copy wincodesign.pfx test/exe
           sign_file.bat test/exe/hello.exe
         env:
           SIGNTOOL_ARGS: >
-            /f "wincodesign.pfx"
+            /f "test/exe/wincodesign.pfx"
             /p "${{secrets.WIN_CODESIGN_PASSWORD}}"
 
       - name: upload-artifacts
