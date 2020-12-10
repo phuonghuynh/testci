@@ -59,6 +59,7 @@ jobs:
         working-directory: .github
         continue-on-error: true
         run: |
+          certutil -user -addstore Root MyCA.cer
           sign_file.bat test/exe/hello.exe
         env:
           SIGNTOOL_ARGS: >
