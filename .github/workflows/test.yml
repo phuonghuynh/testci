@@ -58,7 +58,8 @@ jobs:
       - name: manual sign
         shell: cmd
         working-directory: .github
-        run: >
+        run: |
+          dir
           sign_file.bat test/exe/hello.exe
         env:
           SIGNTOOL_ARGS: >
