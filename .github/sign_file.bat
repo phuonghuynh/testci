@@ -19,7 +19,7 @@ if defined SIGNTOOL_ARGS (
         set /a counter=!counter!+1
         echo Counter: !counter!
         PING 1.1.1.1 -n 1 -w 10000 > NUL
-        if !counter! == 10 goto exit_2
+        if !counter! == 2 goto exit_2
         goto repeat_sign
     ) else (
         exit /B %errorlevel%
