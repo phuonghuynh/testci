@@ -96,3 +96,8 @@ jobs:
           echo "empApp.home=${{env.EMPAPP_HOME}}" >> .env
           mvn clean install -DskipTests -Pprod
 
+      - name: archive installer
+        uses: actions/upload-artifact@v2
+        with:
+          name: installer
+          path: ${{env.SC_INSTALLER_HOME}}/target/installer
