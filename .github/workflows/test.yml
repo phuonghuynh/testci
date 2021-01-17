@@ -31,10 +31,10 @@ jobs:
           submodules: true
 
       - uses: engineerd/configurator@v0.0.1
-      with:
-        name: install4jc.exe
-        url: ${{env.INSTALL4j_DOWNLOAD_URL}}
-        pathInArchive: bin/install4jc.exe
+        with:
+          name: install4jc.exe
+          url: ${{env.INSTALL4j_DOWNLOAD_URL}}
+          pathInArchive: bin/install4jc.exe
 
       - name: Testing
         run: |
