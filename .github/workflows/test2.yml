@@ -1,0 +1,101 @@
+name: sc-installer
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch_sc_installer:
+        description: 'sc_installer branch name'
+        required: true
+        default: 'dev-tc8'
+      branch_emp:
+        description: 'emp branch name'
+        required: true
+        default: 'dev-tc8'
+      branch_emp_app:
+        description: 'emp_app branch name'
+        required: true
+        default: 'dev-tc8'
+
+env:
+  INSTALL4J_LICENSE: ${{secrets.INSTALL4J_LICENSE}}
+
+
+jobs:
+  build-sc-installer:
+    strategy:
+      matrix:
+        os: [ "windows-2019" ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: setup nodejs
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: 10
+      - name: setup java
+        uses: actions/setup-java@v1.4.3
+        with:
+          java-version: 8.0.252
+          java-package: jdk
+          architecture: x64
+      - name: setup install4j
+        uses: phuonghuynh/configurator@v0.0.10
+        id: setup_install4j
+        with:
+          url: https://download-gcdn.ej-technologies.com/install4j/install4j_windows-x64_6_1_6.zip
+
+      - name: setup env
+        shell: bash
+        run: |
+          echo "INSTALL4J_HOME=${{steps.setup_install4j.outputs.extract_location}}/install4j6.1.6" >> $GITHUB_ENV
+
+
+          echo "SC_INSTALLER_HOME=${{github.workspace}}/git/sc-installer" >> $GITHUB_ENV
+          echo "EMP_HOME=${{github.workspace}}/git/emp" >> $GITHUB_ENV
+          echo "EMPAPP_HOME=${{github.workspace}}/git/empApp" >> $GITHUB_ENV
+
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GH_PAT }}
+          repository: dlsecure/sc-installer
+          path: ${{env.SC_INSTALLER_HOME}}
+          ref: ${{github.event.inputs.branch_sc_installer}}
+          submodules: false
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GH_PAT }}
+          repository: dlsecure/emp
+          path: ${{env.EMP_HOME}}
+          ref: ${{github.event.inputs.branch_emp}}
+          submodules: false
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GH_PAT }}
+          repository: dlsecure/empApp
+          path: ${{env.EMPAPP_HOME}}
+          ref: ${{github.event.inputs.branch_emp_app}}
+          submodules: false
+
+      - name: build emp
+        run: |
+          cd ${{env.EMP_HOME}}
+          mvn clean install -DskipTests
+      - name: build empApp
+        run: |
+          cd ${{env.EMPAPP_HOME}}
+          npm ci
+          npx grunt prod
+      - name: build sc-installer
+        run: >
+          echo "build SC-INSTALLER"
+          cd ${{env.SC_INSTALLER_HOME}}
+          mvn clean install -DskipTests -Pprod -Demp.home=${{env.EMP_HOME}} -DempApp.home=${{env.EMPAPP_HOME}}
+
+      - name: archive installer
+        uses: actions/upload-artifact@v2
+        with:
+          name: installer
+          path: ${{env.SC_INSTALLER_HOME}}/target/installer
