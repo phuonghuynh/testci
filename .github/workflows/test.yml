@@ -18,9 +18,7 @@ on:
 
 env:
   INSTALL4J_LICENSE: ${{secrets.INSTALL4J_LICENSE}}
-  SC_INSTALLER_HOME: ./git/sc-installer
-  EMP_HOME: ./git/emp
-  EMPAPP_HOME: ./git/empApp
+
 
 jobs:
   build-sc-installer:
@@ -43,6 +41,18 @@ jobs:
           java-version: 8.0.252
           java-package: jdk
           architecture: x64
+      - name: setup install4j
+        uses: phuonghuynh/configurator@v0.0.10
+        id: setup_install4j
+        with:
+          url: https://download-gcdn.ej-technologies.com/install4j/install4j_windows-x64_6_1_6.zip
+
+      - name: setup env
+        run: |
+          echo "INSTALL4J_HOME=${{steps.setup_install4j.outputs.extract_location}}/install4j6.1.6" >> $GITHUB_ENV
+          echo "SC_INSTALLER_HOME=${{env.GITHUB_WORKSPACE}}/git/sc-installer" >> $GITHUB_ENV
+          echo "EMP_HOME=${{env.GITHUB_WORKSPACE}}/git/emp" >> $GITHUB_ENV
+          echo "EMPAPP_HOME=${{env.GITHUB_WORKSPACE}}/git/empApp" >> $GITHUB_ENV
 
       - uses: actions/checkout@v2
         with:
@@ -66,12 +76,14 @@ jobs:
           ref: ${{github.event.inputs.branch_emp_app}}
           submodules: false
 
-      - name: setup install4j
-        uses: phuonghuynh/configurator@v0.0.10
-        id: setup_install4j
-        with:
-          url: https://download-gcdn.ej-technologies.com/install4j/install4j_windows-x64_6_1_6.zip
-
-      - name: setup env
+      - name: build sources
         run: |
-          echo "INSTALL4J_HOME=${{steps.setup_install4j.outputs.extract_location}}/install4j6.1.6" >> $GITHUB_ENV
+          echo "build EMP"
+          cd ${{env.GITHUB_WORKSPACE}}/git/emp
+          mvn clean install -DskipTests
+
+          echo "build EMPAPP"
+          cd ${{env.GITHUB_WORKSPACE}}/git/empApp
+          npm ci
+          npx grunt prod
+
