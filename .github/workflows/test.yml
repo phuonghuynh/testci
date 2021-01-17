@@ -51,9 +51,11 @@ jobs:
         shell: bash
         run: |
           echo "INSTALL4J_HOME=${{steps.setup_install4j.outputs.extract_location}}/install4j6.1.6" >> $GITHUB_ENV
-          echo "SC_INSTALLER_HOME=${{env.GITHUB_WORKSPACE}}/git/sc-installer" >> $GITHUB_ENV
-          echo "EMP_HOME=${{env.GITHUB_WORKSPACE}}/git/emp" >> $GITHUB_ENV
-          echo "EMPAPP_HOME=${{env.GITHUB_WORKSPACE}}/git/empApp" >> $GITHUB_ENV
+
+
+          echo "SC_INSTALLER_HOME=${{github.workspace}}/git/sc-installer" >> $GITHUB_ENV
+          echo "EMP_HOME=${{github.workspace}}/git/emp" >> $GITHUB_ENV
+          echo "EMPAPP_HOME=${{github.workspace}}/git/empApp" >> $GITHUB_ENV
 
       - uses: actions/checkout@v2
         with:
