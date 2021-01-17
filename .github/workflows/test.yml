@@ -30,7 +30,7 @@ jobs:
         with:
           submodules: true
 
-      - uses: engineerd/configurator@v0.0.1
+      - uses: phuonghuynh/configurator@v0.0.8
         with:
           name: install4jc.exe
           url: https://download-gcdn.ej-technologies.com/install4j/install4j_windows-x64_6_1_6.zip
