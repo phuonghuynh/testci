@@ -48,6 +48,7 @@ jobs:
           url: https://download-gcdn.ej-technologies.com/install4j/install4j_windows-x64_6_1_6.zip
 
       - name: setup env
+        shell: bash
         run: |
           echo "INSTALL4J_HOME=${{steps.setup_install4j.outputs.extract_location}}/install4j6.1.6" >> $GITHUB_ENV
           echo "SC_INSTALLER_HOME=${{env.GITHUB_WORKSPACE}}/git/sc-installer" >> $GITHUB_ENV
