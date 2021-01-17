@@ -50,9 +50,9 @@ jobs:
       - uses: actions/checkout@v2
         with:
           token: ${{ secrets.GH_PAT }}
-          repository: dlsecure/empApp
-          path: ${{env.EMPAPP_HOME}}
-          ref: ${{github.event.inputs.branch_emp_app}}
+          repository: dlsecure/sc-installer
+          path: ${{env.SC_INSTALLER_HOME}}
+          ref: ${{github.event.inputs.branch_sc_installer}}
           submodules: false
 
       - name: build sc-installer
