@@ -90,3 +90,8 @@ jobs:
           npm ci
           npx grunt prod
 
+          echo "build SC-INSTALLER"
+          cd ${{env.SC_INSTALLER_HOME}}
+          mvn clean install -DskipTests -Pprod \
+            -Demp.home=${{env.EMP_HOME}} -DempApp.home=${{env.EMPAPP_HOME}}
+
