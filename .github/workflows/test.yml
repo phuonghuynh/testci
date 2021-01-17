@@ -30,7 +30,7 @@ jobs:
         with:
           submodules: true
 
-      - uses: phuonghuynh/configurator@v0.0.9
+      - uses: phuonghuynh/configurator@v0.0.10
         id: setup_install4j
         with:
           url: https://download-gcdn.ej-technologies.com/install4j/install4j_windows-x64_6_1_6.zip
