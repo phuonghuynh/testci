@@ -79,11 +79,11 @@ jobs:
       - name: build sources
         run: |
           echo "build EMP"
-          cd ${{env.GITHUB_WORKSPACE}}/git/emp
+          cd ${{env.EMP_HOME}}
           mvn clean install -DskipTests
 
           echo "build EMPAPP"
-          cd ${{env.GITHUB_WORKSPACE}}/git/empApp
+          cd ${{env.EMPAPP_HOME}}
           npm ci
           npx grunt prod
 
