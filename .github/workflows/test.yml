@@ -16,8 +16,8 @@ on:
         required: true
         default: 'dev-tc8'
 
-env:
-  INSTALL4j_DOWNLOAD_URL: https://download-gcdn.ej-technologies.com/install4j/install4j_windows-x64_6_1_6.zip
+#env:
+#  INSTALL4j_DOWNLOAD_URL: https://download-gcdn.ej-technologies.com/install4j/install4j_windows-x64_6_1_6.zip
 
 jobs:
   clone_and_build_app:
@@ -33,8 +33,8 @@ jobs:
       - uses: engineerd/configurator@v0.0.1
         with:
           name: install4jc.exe
-          url: ${{env.INSTALL4j_DOWNLOAD_URL}}
-          pathInArchive: bin/install4jc.exe
+          url: https://download-gcdn.ej-technologies.com/install4j/install4j_windows-x64_6_1_6.zip
+          pathInArchive: install4j6.1.6/bin/install4jc.exe
 
       - name: Testing
         run: |
