@@ -56,12 +56,8 @@ jobs:
           submodules: false
 
       - name: build sc-installer
-        shell: bash
         run: >
-          cd ${{env.SC_INSTALLER_HOME}};
-          mvn clean install -DskipTests
-            -Pprod -Demp.home=${{env.EMP_HOME}}
-            -DempApp.home=${{env.EMPAPP_HOME}}
+          echo ${{env.SC_INSTALLER_HOME}}
 
       - name: archive installer
         uses: actions/upload-artifact@v2
