@@ -89,8 +89,8 @@ jobs:
           npx grunt prod
       - name: build sc-installer
         working-directory: ${{env.SC_INSTALLER_HOME}}
-        run: >
-          mvn clean install-Pprod;
+        run: |
+          mvn clean install -Pprod
 
       - name: archive installer
         uses: actions/upload-artifact@v2

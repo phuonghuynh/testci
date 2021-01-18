@@ -58,7 +58,6 @@ jobs:
       - name: build empApp
         working-directory: ${{env.EMPAPP_HOME}}
         run: |
-          dir
           npm ci
           npx grunt prod
 
