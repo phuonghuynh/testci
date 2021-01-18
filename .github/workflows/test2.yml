@@ -58,8 +58,8 @@ jobs:
       - name: build sc-installer
         run: >
           echo ${{env.SC_INSTALLER_HOME}};
-          cd '${{env.SC_INSTALLER_HOME}}'
-          mvn clean install -DskipTests -Pprod -Demp.home=${{env.EMP_HOME}} -DempApp.home=${{env.EMPAPP_HOME}}
+          cd '${{env.SC_INSTALLER_HOME}}';
+          mvn clean install -DskipTests -Pprod -Demp.home='${{env.EMP_HOME}}' -DempApp.home='${{env.EMPAPP_HOME}}';
 
       - name: archive installer
         uses: actions/upload-artifact@v2
