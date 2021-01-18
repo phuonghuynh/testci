@@ -82,6 +82,7 @@ jobs:
         working-directory: ${{env.EMP_HOME}}
         run: |
           mvn clean install -DskipTests
+          dir emp-assembly/target/.dist
       - name: build empApp
         working-directory: ${{env.EMPAPP_HOME}}
         run: |
