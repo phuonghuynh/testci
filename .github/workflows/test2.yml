@@ -43,9 +43,9 @@ jobs:
         run: |
           echo "INSTALL4J_HOME=${{steps.setup_install4j.outputs.extract_location}}/install4j6.1.6" >> $GITHUB_ENV
 
-          echo "SC_INSTALLER_HOME=./git/sc-installer" >> $GITHUB_ENV
-          echo "EMP_HOME=./git/emp" >> $GITHUB_ENV
-          echo "EMPAPP_HOME=./git/empApp" >> $GITHUB_ENV
+          echo "SC_INSTALLER_HOME=${{github.workspace}}/git/sc-installer" >> $GITHUB_ENV
+          echo "EMP_HOME=${{github.workspace}}/git/emp" >> $GITHUB_ENV
+          echo "EMPAPP_HOME=${{github.workspace}}/git/empApp" >> $GITHUB_ENV
 
       - uses: actions/checkout@v2
         with:
@@ -57,7 +57,8 @@ jobs:
 
       - name: build sc-installer
         run: >
-          echo ${{env.SC_INSTALLER_HOME}}
+          echo ${{env.SC_INSTALLER_HOME}};
+          cd '${{env.SC_INSTALLER_HOME}}'
 
       - name: archive installer
         uses: actions/upload-artifact@v2
