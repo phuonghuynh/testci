@@ -50,17 +50,16 @@ jobs:
       - uses: actions/checkout@v2
         with:
           token: ${{ secrets.GH_PAT }}
-          repository: dlsecure/sc-installer
-          path: ${{env.SC_INSTALLER_HOME}}
-          ref: ${{github.event.inputs.branch_sc_installer}}
+          repository: dlsecure/empApp
+          path: ${{env.EMPAPP_HOME}}
+          ref: ${{github.event.inputs.branch_emp_app}}
           submodules: false
 
-      - name: build sc-installer
-        working-directory: ${{env.SC_INSTALLER_HOME}}
-        run: >
-          dir;
-          mvn --version;
-          mvn clean install -Pprod;
+      - name: build empApp
+        working-directory: ${{env.EMPAPP_HOME}}
+        run: |
+          npm ci
+          npx grunt prod
 
       - name: archive installer
         uses: actions/upload-artifact@v2
