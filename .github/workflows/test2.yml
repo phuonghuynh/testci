@@ -59,7 +59,8 @@ jobs:
         run: >
           echo ${{env.SC_INSTALLER_HOME}};
           cd '${{env.SC_INSTALLER_HOME}}';
-          mvn clean install -Pprod -Demp.home='${{env.EMP_HOME}}' -DempApp.home='${{env.EMPAPP_HOME}}';
+          mvnw.cmd --version;
+          mvnw.cmd clean install -Pprod -Demp.home='${{env.EMP_HOME}}' -DempApp.home='${{env.EMPAPP_HOME}}';
 
       - name: archive installer
         uses: actions/upload-artifact@v2
