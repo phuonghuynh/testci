@@ -83,7 +83,7 @@ jobs:
         run: |
           mvn clean install -DskipTests
       - name: build empApp
-        working-directory: {{env.EMPAPP_HOME}}
+        working-directory: ${{env.EMPAPP_HOME}}
         run: |
           npm ci
           npx grunt prod
