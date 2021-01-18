@@ -52,7 +52,6 @@ jobs:
         run: |
           echo "INSTALL4J_HOME=${{steps.setup_install4j.outputs.extract_location}}/install4j6.1.6" >> $GITHUB_ENV
 
-
           echo "SC_INSTALLER_HOME=${{github.workspace}}/git/sc-installer" >> $GITHUB_ENV
           echo "EMP_HOME=${{github.workspace}}/git/emp" >> $GITHUB_ENV
           echo "EMPAPP_HOME=${{github.workspace}}/git/empApp" >> $GITHUB_ENV
@@ -79,20 +78,19 @@ jobs:
           ref: ${{github.event.inputs.branch_emp_app}}
           submodules: false
 
-      - name: build sources
+      - name: build emp
+        working-directory: ${{env.EMP_HOME}}
         run: |
-          echo "build EMP"
-          cd ${{env.EMP_HOME}}
           mvn clean install -DskipTests
-
-          echo "build EMPAPP"
-          cd ${{env.EMPAPP_HOME}}
+      - name: build empApp
+        working-directory: {{env.EMPAPP_HOME}}
+        run: |
           npm ci
           npx grunt prod
-
-          echo "build SC-INSTALLER"
-          cd ${{env.SC_INSTALLER_HOME}}
-          mvn clean install -DskipTests -Pprod -Demp.home=${{env.EMP_HOME}} -DempApp.home=${{env.EMPAPP_HOME}}
+      - name: build sc-installer
+        working-directory: ${{env.SC_INSTALLER_HOME}}
+        run: >
+          mvn clean install-Pprod;
 
       - name: archive installer
         uses: actions/upload-artifact@v2
