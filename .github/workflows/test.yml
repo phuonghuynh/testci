@@ -54,7 +54,6 @@ jobs:
         working-directory: ./tools
         run: |
           7z x *.zip
-          ls -all ${JAVA_HOME}/bin
 
       - name: check jdk
         run: |
