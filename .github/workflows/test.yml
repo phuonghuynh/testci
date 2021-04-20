@@ -37,5 +37,5 @@ jobs:
       - name: extract jdk
         working-directory: ./tools
         run: |
-          7z x win-jdk-9.0.4.zip
+          7z x *.zip
           ls -all .
