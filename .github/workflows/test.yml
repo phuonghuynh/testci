@@ -55,3 +55,7 @@ jobs:
         run: |
           7z x *.zip
           ls -all ${JAVA_HOME}/bin
+
+      - name: check jdk
+        run: |
+          ls -all ${JAVA_HOME}/bin
