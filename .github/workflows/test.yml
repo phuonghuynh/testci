@@ -24,7 +24,7 @@ jobs:
   build-sc-installer:
     strategy:
       matrix:
-        os: [ "windows-2019", "macos-10.15" ]
+        os: [ "macos-10.15" ]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -38,4 +38,4 @@ jobs:
         working-directory: ./tools
         run: |
           7z x win-jdk-9.0.4.zip
-          dir .
+          ls -all .
