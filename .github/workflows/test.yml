@@ -33,8 +33,9 @@ jobs:
         shell: bash
         run: |
           echo "JDK_URL=https://www.dropbox.com/s/3tvg40lwuivyaek/mac-jdk-9.0.4.zip?dl=1" >> $GITHUB_ENV
-          echo "JAVA_HOME=./tools/jdk-9.0.4.jdk/Contents/Home" >> $GITHUB_ENV
-          echo "$JAVA_HOME/bin" >> $GITHUB_PATH
+          JAVA_HOME="${GITHUB_WORKSPACE}/tools/jdk-9.0.4.jdk/Contents/Home"
+          echo "JAVA_HOME=${JAVA_HOME}" >> $GITHUB_ENV
+          echo "${JAVA_HOME}/bin" >> $GITHUB_PATH
 
       - name: setup win env
         if: runner.os == 'windows'
