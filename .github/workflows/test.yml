@@ -28,14 +28,30 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
+      - name: setup mac env
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          echo "JDK_URL=https://www.dropbox.com/s/3tvg40lwuivyaek/mac-jdk-9.0.4.zip?dl=1" >> $GITHUB_ENV
+          echo "JAVA_HOME=./tools/jdk-9.0.4.jdk/Contents/Home" >> $GITHUB_ENV
+          echo "$JAVA_HOME/bin" >> $GITHUB_PATH
+
+      - name: setup win env
+        if: runner.os == 'windows'
+        shell: bash
+        run: |
+          echo "JDK_URL=https://www.dropbox.com/s/z1sh0shlfrdacsl/win-jdk-9.0.4.zip?dl=1" >> $GITHUB_ENV
+          echo "JAVA_HOME=./tools/jdk-9.0.4" >> $GITHUB_ENV
+          echo "$JAVA_HOME/bin" >> $GITHUB_PATH
+
       - name: download
         uses: suisei-cn/actions-download-file@v1
         with:
-          url: https://www.dropbox.com/s/z1sh0shlfrdacsl/mac-jdk-9.0.4.zip?dl=1
+          url: ${{env.JDK_URL}}
           target: ./tools/
 
       - name: extract jdk
         working-directory: ./tools
         run: |
           7z x *.zip
-          ls -all jdk-9.0.4/bin
+          ls -all ${JAVA_HOME}/bin
