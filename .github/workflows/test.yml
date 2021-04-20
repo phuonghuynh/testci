@@ -44,6 +44,11 @@ jobs:
           echo "JAVA_HOME=${GITHUB_WORKSPACE}\\tools\\jdk-9.0.4" >> $GITHUB_ENV
           echo "$JAVA_HOME\\bin" >> $GITHUB_PATH
 
+      - name: setup win path env
+        if: runner.os == 'windows'
+        run: |
+          echo "$env:JAVA_HOME\\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8
+
       - name: download
         uses: suisei-cn/actions-download-file@v1
         with:
