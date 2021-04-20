@@ -24,12 +24,12 @@ jobs:
   build-sc-installer:
     strategy:
       matrix:
-        os: [ "macos-10.15" ]
+        os: [ "macos-10.15", "windows-2019" ]
     runs-on: ${{ matrix.os }}
 
     steps:
       - name: setup mac env
-        if: runner.os == 'macOS'
+#        if: runner.os == 'macOS'
         shell: bash
         run: |
           echo "JDK_URL=https://www.dropbox.com/s/3tvg40lwuivyaek/mac-jdk-9.0.4.zip?dl=1" >> $GITHUB_ENV
@@ -37,13 +37,13 @@ jobs:
           echo "JAVA_HOME=${JAVA_HOME}" >> $GITHUB_ENV
           echo "${JAVA_HOME}/bin" >> $GITHUB_PATH
 
-      - name: setup win env
-        if: runner.os == 'windows'
-        shell: bash
-        run: |
-          echo "JDK_URL=https://www.dropbox.com/s/z1sh0shlfrdacsl/win-jdk-9.0.4.zip?dl=1" >> $GITHUB_ENV
-          echo "JAVA_HOME=${GITHUB_WORKSPACE}\\tools\\jdk-9.0.4" >> $GITHUB_ENV
-          echo "$JAVA_HOME\\bin" >> $GITHUB_PATH
+#      - name: setup win env
+#        if: runner.os == 'windows'
+#        shell: bash
+#        run: |
+#          echo "JDK_URL=https://www.dropbox.com/s/z1sh0shlfrdacsl/win-jdk-9.0.4.zip?dl=1" >> $GITHUB_ENV
+#          echo "JAVA_HOME=${GITHUB_WORKSPACE}\\tools\\jdk-9.0.4" >> $GITHUB_ENV
+#          echo "$JAVA_HOME\\bin" >> $GITHUB_PATH
 
       - name: setup win path env
         if: runner.os == 'windows'
