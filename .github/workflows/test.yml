@@ -26,75 +26,15 @@ jobs:
       matrix:
         os: [ "windows-2019" ]
     runs-on: ${{ matrix.os }}
+
     steps:
-      - uses: actions/checkout@v2
+      - name: download
+        uses: suisei-cn/actions-download-file@v1
         with:
-          submodules: true
+          url: https://www.dropbox.com/s/z1sh0shlfrdacsl/win-jdk-9.0.4.zip
+          target: ./tools/
 
-      - name: setup nodejs
-        uses: actions/setup-node@v2-beta
-        with:
-          node-version: 10
-      - name: setup java
-        uses: actions/setup-java@v1.4.3
-        with:
-          java-version: 8.0.252
-          java-package: jdk
-          architecture: x64
-      - name: setup install4j
-        uses: phuonghuynh/configurator@v0.0.10
-        id: setup_install4j
-        with:
-          url: https://download-gcdn.ej-technologies.com/install4j/install4j_windows-x64_6_1_6.zip
-
-      - name: setup env
-        shell: bash
+      - name: extract jdk
         run: |
-          echo "INSTALL4J_HOME=${{steps.setup_install4j.outputs.extract_location}}/install4j6.1.6" >> $GITHUB_ENV
-
-          echo "SC_INSTALLER_HOME=${{github.workspace}}/git/sc-installer" >> $GITHUB_ENV
-          echo "EMP_HOME=${{github.workspace}}/git/emp" >> $GITHUB_ENV
-          echo "EMPAPP_HOME=${{github.workspace}}/git/empApp" >> $GITHUB_ENV
-
-      - uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.GH_PAT }}
-          repository: dlsecure/sc-installer
-          path: ${{env.SC_INSTALLER_HOME}}
-          ref: ${{github.event.inputs.branch_sc_installer}}
-          submodules: false
-      - uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.GH_PAT }}
-          repository: dlsecure/emp
-          path: ${{env.EMP_HOME}}
-          ref: ${{github.event.inputs.branch_emp}}
-          submodules: false
-      - uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.GH_PAT }}
-          repository: dlsecure/empApp
-          path: ${{env.EMPAPP_HOME}}
-          ref: ${{github.event.inputs.branch_emp_app}}
-          submodules: false
-
-      - name: build emp
-        working-directory: ${{env.EMP_HOME}}
-        run: |
-          mvn clean install -DskipTests
-          dir emp-assembly/target/.dist
-      - name: build empApp
-        working-directory: ${{env.EMPAPP_HOME}}
-        run: |
-          npm ci
-          npx grunt prod
-      - name: build sc-installer
-        working-directory: ${{env.SC_INSTALLER_HOME}}
-        run: |
-          mvn clean install -Pprod
-
-      - name: archive installer
-        uses: actions/upload-artifact@v2
-        with:
-          name: installer
-          path: ${{env.SC_INSTALLER_HOME}}/target/installer
+          7z x ./tools/win-jdk-9.0.4.zip
+          dir ./tools
