@@ -57,11 +57,11 @@ jobs:
         run: |
           echo "$env:JAVA_HOME\\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8
 
-      - name: Install dependencies Windows
-        run: vcpkg integrate install; vcpkg install openssl:x64-windows
-        if: runner.os == 'windows'
-        env:
-          VCPKG_ROOT: 'C:\vcpkg'
+#      - name: Install dependencies Windows
+#        run: vcpkg integrate install; vcpkg install openssl:x64-windows
+#        if: runner.os == 'windows'
+#        env:
+#          VCPKG_ROOT: 'C:\vcpkg'
 
       - name: download
         uses: suisei-cn/actions-download-file@v1
