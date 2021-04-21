@@ -79,8 +79,8 @@ jobs:
       - name: build it
         working-directory: git
         run: |
-          ${{env.GRADLEW}} build proguard javaPackager
-          dir assembly\build\distribution\scserv
+          ${{env.GRADLEW}} build javaPackager
+          dir /s assembly\build\distribution
 
       - name: upload-artifacts
         uses: actions/upload-artifact@v2
