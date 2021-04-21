@@ -10,9 +10,14 @@ on:
       branch:
         description: 'branch name'
         required: false
+      version:
+        description: 'version str (1.0.1), empty will disable create-release step'
+        required: false
 
 env:
   _GITHUB_PAT: ${{secrets._GITHUB_PAT}}
+  _VERSION: ${{github.event.inputs.version}}
+  _RELEASE_TAG: v${{github.event.inputs.version}}
 
 jobs:
   test-build:
@@ -96,3 +101,16 @@ jobs:
         with:
           name: artifacts
           path: git/dist
+
+      -  name : create release
+         if: ${{env._VERSION}}
+         continue-on-error: true
+         uses : actions/create-release@v1
+         env :
+           GITHUB_TOKEN : ${{env._GITHUB_PAT}}
+         with :
+           tag_name : v${{env._RELEASE_TAG}}
+           release_name : Release v${{env._RELEASE_TAG}}
+           body : Auto release API v${{env._RELEASE_TAG}} by @ci
+           draft : false
+           prerelease : false
