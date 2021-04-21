@@ -79,7 +79,7 @@ jobs:
       - name: build it
         working-directory: git
         run: |
-          ${{env.GRADLEW}} build javaPackager createJre copyDlls
+          ${{env.GRADLEW}} build javaPackager createJre bundle
 
       - name: debug
         working-directory: git
