@@ -9,8 +9,7 @@ on:
         default: '["windows-2016", "macos-10.15"]'
       branch:
         description: 'branch name'
-        required: true
-        default: 'SCM-209_grpc_ssl_expiration'
+        required: false
 
 env:
   _GITHUB_PAT: ${{secrets._GITHUB_PAT}}
@@ -23,12 +22,21 @@ jobs:
     runs-on: ${{matrix.os}}
 
     steps:
+      - name: setup env
+        shell: bash
+        run: |
+          echo "setup clone branch"
+          _REF=${GITHUB_REF##*/}
+          _BRANCH="${{github.event.inputs.branch}}"
+          _BRANCH=${_BRANCH:-${_REF}}
+          echo "_BRANCH=${_BRANCH}" >> $GITHUB_ENV
+
       - name: clone source
         uses: actions/checkout@v2
         with:
           repository: dlsecure/safecrypt-service
           token: ${{env._GITHUB_PAT}}
-          ref: ${{github.event.inputs.branch}}
+          ref: ${{env._BRANCH}}
           path: git
           submodules: true
 
