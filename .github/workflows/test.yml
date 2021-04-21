@@ -70,7 +70,7 @@ jobs:
 #        run: |
 #          echo "$env:JAVA_HOME\\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8
 
-      - name: download
+      - name: download resources
         uses: suisei-cn/actions-download-file@v1
         with:
           url: ${{env.JDK_URL}}
@@ -109,8 +109,11 @@ jobs:
          env :
            GITHUB_TOKEN : ${{env._GITHUB_PAT}}
          with :
-           tag_name : v${{env._RELEASE_TAG}}
-           release_name : Release v${{env._RELEASE_TAG}}
-           body : Auto release API v${{env._RELEASE_TAG}} by @ci
+           tag_name : ${{env._RELEASE_TAG}}
+           release_name : Release ${{env._RELEASE_TAG}}
+           body : Auto release API ${{env._RELEASE_TAG}} by @ci
            draft : false
            prerelease : false
+           commitish: main
+           owner: phuonghuynh
+           repo: testci3
