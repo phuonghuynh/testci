@@ -13,7 +13,7 @@ on:
         default: 'SCM-209_grpc_ssl_expiration'
 
 env:
-  _GITHUB_PAT: "${{secrets._GITHUB_PAT}}"
+  _GITHUB_PAT: ${{secrets._GITHUB_PAT}}
 
 jobs:
   test-build:
@@ -67,3 +67,15 @@ jobs:
           7z x *.zip
           echo $JAVA_HOME
           java -version
+
+      - name: build it
+        working-directory: git
+        run: |
+          ${{env.GRADLEW}} prod
+          ls -all dist/
+
+      - name: upload-artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifacts
+          path: git/dist
