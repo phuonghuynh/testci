@@ -3,31 +3,35 @@ name: sc-installer
 on:
   workflow_dispatch:
     inputs:
-      branch_sc_installer:
-        description: 'sc_installer branch name'
+      run_ons:
+        description: 'OS list'
         required: true
-        default: 'dev-tc8'
-      branch_emp:
-        description: 'emp branch name'
+        default: '["windows-2019", "macos-10.15"]'
+      branch:
+        description: 'branch name'
         required: true
-        default: 'dev-tc8'
-      branch_emp_app:
-        description: 'emp_app branch name'
-        required: true
-        default: 'dev-tc8'
+        default: 'SCM-209_grpc_ssl_expiration'
 
 env:
-  INSTALL4J_LICENSE: ${{secrets.INSTALL4J_LICENSE}}
-
+  _GITHUB_PAT: "${{secrets._GITHUB_PAT}}"
 
 jobs:
-  build-sc-installer:
+  test-build:
     strategy:
       matrix:
-        os: [ "macos-10.15", "windows-2019" ]
-    runs-on: ${{ matrix.os }}
+        os: ${{fromJson(github.event.inputs.run_ons)}}
+    runs-on: ${{matrix.os}}
 
     steps:
+      - name: clone source
+        uses: actions/checkout@v2
+        with:
+          repository: dlsecure/safecrypt/service
+          token: ${{env._GITHUB_PAT}}
+          ref: ${{github.event.inputs.branch}}
+          path: git
+          submodules: true
+
       - name: setup mac env
         if: runner.os == 'macOS'
         shell: bash
