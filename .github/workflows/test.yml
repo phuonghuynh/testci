@@ -65,10 +65,10 @@ jobs:
           echo "$JAVA_HOME\\bin" >> $GITHUB_PATH
           echo "GRADLEW=.\gradlew.bat" >> $GITHUB_ENV
 
-#      - name: setup win path env
-#        if: runner.os == 'windows'
-#        run: |
-#          echo "$env:JAVA_HOME\\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8
+      #      - name: setup win path env
+      #        if: runner.os == 'windows'
+      #        run: |
+      #          echo "$env:JAVA_HOME\\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8
 
       - name: download resources
         uses: suisei-cn/actions-download-file@v1
@@ -88,32 +88,38 @@ jobs:
         run: |
           ${{env.GRADLEW}} prod
 
+      - name: get tarball link
+        shell: bash
+        run: |
+          TARBALL=$(readlink -f dist/*)
+          echo "TARBALL=${TARBALL}" >> $GITHUB_ENV
+
       - name: debug
         working-directory: git
         shell: bash
         continue-on-error: true
         run: |
-          ls -all assembly/build/distribution
-          ls -all assembly/build/distribution/scserv
+          echo ${TARBALL}
 
-      - name: upload-artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: artifacts
-          path: git/dist
+#      - name: upload-artifacts
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: artifacts
+#          path: git/dist
 
-      -  name : create release
-         if: ${{env._VERSION}}
-         continue-on-error: true
-         uses : actions/create-release@v1
-         env :
-           GITHUB_TOKEN : ${{env._GITHUB_PAT}}
-         with :
-           tag_name : ${{env._RELEASE_TAG}}
-           release_name : Release ${{env._RELEASE_TAG}}
-           body : Auto release API ${{env._RELEASE_TAG}} by @ci
-           draft : false
-           prerelease : false
-           commitish: main
-           owner: phuonghuynh
-           repo: testci3
+#      - name: create release with assests
+#        if: ${{env._VERSION}}
+#        continue-on-error: true
+#        uses: softprops/action-gh-release@v1
+#        env:
+#          GITHUB_TOKEN: ${{env._GITHUB_PAT}}
+#          GITHUB_REPOSITORY: "phuonghuynh/testci3"
+#        with:
+#          tag_name: ${{env._RELEASE_TAG}}
+#          name: Release ${{env._RELEASE_TAG}}
+#          body: Auto release API ${{env._RELEASE_TAG}} by @ci
+##          draft: false
+##          prerelease: false
+#          files: |
+#            git/dist/scserv-prod-windows-x86_64.tar
+#            git/dist/scserv-prod-osx-x86_64.tar
