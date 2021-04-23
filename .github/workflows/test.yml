@@ -112,11 +112,12 @@ jobs:
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{env._GITHUB_PAT}}
-#          GITHUB_REPOSITORY: phuonghuynh/testci3
+          GITHUB_REF: ${{env.BRANCH}}
+          GITHUB_REPOSITORY: phuonghuynh/testci3
         with:
           tag_name: ${{env.RELEASE_TAG}}
           name: Release ${{env.RELEASE_TAG}}
-          github_repository: phuonghuynh/testci3
+#          github_repository: phuonghuynh/testci3
 #          body: Auto release API ${{env.RELEASE_TAG}} by @ci
 #          draft: false
 #          prerelease: false
