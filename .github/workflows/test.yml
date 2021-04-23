@@ -112,11 +112,12 @@ jobs:
         uses: phuonghuynh/action-ghrelease@v1.1.0
         env:
           GITHUB_TOKEN: ${{env._GITHUB_PAT}}
-          GITHUB_REF: ${{env.BRANCH}}
-          GITHUB_REPOSITORY: phuonghuynh/testci3
         with:
+          repository: phuonghuynh/testci3
+          commitish: main
           tag_name: ${{env.RELEASE_TAG}}
           name: Release ${{env.RELEASE_TAG}}
+#          github_repository: phuonghuynh/testci3
 #          body: Auto release API ${{env.RELEASE_TAG}} by @ci
 #          draft: false
 #          prerelease: false
