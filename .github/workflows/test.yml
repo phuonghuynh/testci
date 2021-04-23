@@ -16,8 +16,8 @@ on:
 
 env:
   _GITHUB_PAT: ${{secrets._GITHUB_PAT}}
-  _VERSION: ${{github.event.inputs.version}}
-  _RELEASE_TAG: v${{github.event.inputs.version}}
+  VERSION: ${{github.event.inputs.version}}
+  RELEASE_TAG: v${{github.event.inputs.version}}
 
 jobs:
   test-build:
@@ -31,17 +31,17 @@ jobs:
         shell: bash
         run: |
           echo "setup clone branch"
-          _REF=${GITHUB_REF##*/}
-          _BRANCH="${{github.event.inputs.branch}}"
-          _BRANCH=${_BRANCH:-${_REF}}
-          echo "_BRANCH=${_BRANCH}" >> $GITHUB_ENV
+          REF=${GITHUB_REF##*/}
+          BRANCH="${{github.event.inputs.branch}}"
+          BRANCH=${BRANCH:-${REF}}
+          echo "BRANCH=${BRANCH}" >> $GITHUB_ENV
 
       - name: clone source
         uses: actions/checkout@v2
         with:
           repository: dlsecure/safecrypt-service
           token: ${{env._GITHUB_PAT}}
-          ref: ${{env._BRANCH}}
+          ref: ${{env.BRANCH}}
           path: git
           submodules: true
 
@@ -68,7 +68,7 @@ jobs:
       #      - name: setup win path env
       #        if: runner.os == 'windows'
       #        run: |
-      #          echo "$env:JAVA_HOME\\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8
+      #          echo "$env:JAVA_HOME\\bin" | Out-File -FilePath $env:_GITHUB_PATH -Encoding utf8
 
       - name: download resources
         uses: suisei-cn/actions-download-file@v1
@@ -80,7 +80,6 @@ jobs:
         working-directory: ./tools
         run: |
           7z x *.zip
-          echo $JAVA_HOME
           java -version
 
       - name: build it
@@ -91,8 +90,8 @@ jobs:
       - name: find tarball
         shell: bash
         run: |
-          found=$(find "git/dist" -name "*.tar" -type "f")
-          echo $found
+          TARBALL=$(find "git/dist" -name "*.tar" -type "f")
+          echo "TARBALL=${TARBALL}" >> $GITHUB_ENV
 
 #      - name: debug
 #        working-directory: git
@@ -107,19 +106,17 @@ jobs:
 #          name: artifacts
 #          path: git/dist
 
-#      - name: create release with assests
-#        if: ${{env._VERSION}}
-#        continue-on-error: true
-#        uses: softprops/action-gh-release@v1
-#        env:
-#          GITHUB_TOKEN: ${{env._GITHUB_PAT}}
-#          GITHUB_REPOSITORY: "phuonghuynh/testci3"
-#        with:
-#          tag_name: ${{env._RELEASE_TAG}}
-#          name: Release ${{env._RELEASE_TAG}}
-#          body: Auto release API ${{env._RELEASE_TAG}} by @ci
-##          draft: false
-##          prerelease: false
-#          files: |
-#            git/dist/scserv-prod-windows-x86_64.tar
-#            git/dist/scserv-prod-osx-x86_64.tar
+      - name: create release with assests
+        if: ${{env.VERSION}}
+        continue-on-error: true
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{env._GITHUB_PAT}}
+          GITHUB_REPOSITORY: "phuonghuynh/testci3"
+        with:
+          tag_name: ${{env.RELEASE_TAG}}
+          name: Release ${{env.RELEASE_TAG}}
+          body: Auto release API ${{env.RELEASE_TAG}} by @ci
+#          draft: false
+#          prerelease: false
+          files: ${{env.TARBALL}}
