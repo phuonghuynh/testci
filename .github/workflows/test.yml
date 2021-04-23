@@ -88,18 +88,20 @@ jobs:
         run: |
           ${{env.GRADLEW}} prod
 
-      - name: get tarball link
-        shell: bash
-        run: |
-          TARBALL=$(readlink -f dist/*)
-          echo "TARBALL=${TARBALL}" >> $GITHUB_ENV
+      - name: find tarball
+        uses: DovnarAlexander/github-action-file-detection@master
+        id: findTarball
+        with:
+          type: f
+          wildcard: '*.tar'
+          base_path: git/dist
 
       - name: debug
         working-directory: git
         shell: bash
         continue-on-error: true
         run: |
-          echo ${TARBALL}
+          echo $${{steps.findTarball.outputs.found}}
 
 #      - name: upload-artifacts
 #        uses: actions/upload-artifact@v2
