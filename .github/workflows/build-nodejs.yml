@@ -68,11 +68,19 @@ jobs:
           echo "GRADLEW=.\gradlew.bat" >> $GITHUB_ENV
 
       - name: build it
+        continue-on-error: true
         working-directory: git
+        id: build_it
         env:
           GITHUB_TOKEN: ${{env._GITHUB_PAT}}
         run: |
           ${{env.GRADLEW}}
+
+      - name: upload logs
+        uses: actions/upload-artifact@v2
+        with:
+          name: logger
+          path: ./git/.ant/log
 
 #      - name: find tarball
 #        shell: bash
