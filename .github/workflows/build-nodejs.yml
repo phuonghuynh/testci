@@ -38,7 +38,7 @@ jobs:
           BRANCH="${{github.event.inputs.branch}}"
           BRANCH=${BRANCH:-${REF}}
           echo "BRANCH=${BRANCH}" >> $GITHUB_ENV
-          [ -z "$BUILD_NUMBER" ] BUILD_NUMBER=${{github.run_number}}
+          [ -z "$BUILD_NUMBER" ] && BUILD_NUMBER=${{github.run_number}}
           echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
 
       - name: clone source
