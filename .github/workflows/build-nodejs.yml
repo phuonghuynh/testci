@@ -10,6 +10,7 @@ on:
       branch:
         description: 'branch name'
         required: false
+        default: 'dev'
       version:
         description: 'release version str (1.0.1)'
         required: false
