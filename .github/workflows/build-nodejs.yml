@@ -22,8 +22,6 @@ env:
   _GITHUB_PAT: ${{secrets._GITHUB_PAT}}
   VER_NUMBER: ${{github.event.inputs.version}}
   BUILD_NUMBER: ${{github.event.inputs.version}}
-  #  RELEASE_TAG: v${{github.event.inputs.version}}
-#  GIT_REPO_URL: https://github.com/dlsecure/safecrypt-electron
 
 jobs:
   make_scm_client:
@@ -40,6 +38,8 @@ jobs:
           BRANCH="${{github.event.inputs.branch}}"
           BRANCH=${BRANCH:-${REF}}
           echo "BRANCH=${BRANCH}" >> $GITHUB_ENV
+          [ -z "$BUILD_NUMBER" ] BUILD_NUMBER=${{github.run_number}}
+          echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
 
       - name: clone source
         uses: actions/checkout@v2
@@ -66,20 +66,10 @@ jobs:
         run: |
           echo "GRADLEW=.\gradlew.bat" >> $GITHUB_ENV
 
-#      - name: download resources
-#        uses: suisei-cn/actions-download-file@v1
-#        with:
-#          url: ${{env.JDK_URL}}
-#          target: ./tools/
-
-#      - name: extract jdk
-#        working-directory: ./tools
-#        run: |
-#          7z x *.zip
-#          java -version
-
       - name: build it
         working-directory: git
+        env:
+          GITHUB_TOKEN: ${{env._GITHUB_PAT}}
         run: |
           ${{env.GRADLEW}}
 
