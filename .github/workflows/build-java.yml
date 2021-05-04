@@ -20,7 +20,7 @@ env:
   RELEASE_TAG: v${{github.event.inputs.version}}
 
 jobs:
-  test-build:
+  make_java:
     strategy:
       matrix:
         os: ${{fromJson(github.event.inputs.run_ons)}}
