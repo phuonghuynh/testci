@@ -23,7 +23,7 @@ env:
   VER_NUMBER: ${{github.event.inputs.version}}
   BUILD_NUMBER: ${{github.event.inputs.version}}
   #  RELEASE_TAG: v${{github.event.inputs.version}}
-  GIT_REPO_URL: https://github.com/dlsecure/safecrypt-electron
+#  GIT_REPO_URL: https://github.com/dlsecure/safecrypt-electron
 
 jobs:
   make_scm_client:
@@ -44,7 +44,8 @@ jobs:
       - name: clone source
         uses: actions/checkout@v2
         with:
-          repository: ${{env.GIT_REPO_URL}}
+          repository: dlsecure/safecrypt-electron
+          token: ${{env._GITHUB_PAT}}
           ref: ${{env.BRANCH}}
           path: git
           submodules: true
