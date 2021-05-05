@@ -73,6 +73,7 @@ jobs:
         id: build_it
         env:
           GITHUB_TOKEN: ${{env._GITHUB_PAT}}
+          DEBUG: electron-builder
         run: |
           ${{env.GRADLEW}}
 
