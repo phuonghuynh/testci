@@ -7,7 +7,7 @@ runs:
   using: "composite"
   steps:
     - name: export sign cert pfx file
-      shell: pwsh
+      shell: bash
       run: |
         $B64 = "${{env.WIN_CODESIGN_BASE64}}"
         $B64 | Out-File "wincodesign.b64"
