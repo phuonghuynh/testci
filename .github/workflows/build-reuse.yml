@@ -22,7 +22,7 @@ on:
 env:
   _GITHUB_PAT: ${{secrets._GITHUB_PAT}}
   VER_NUMBER: ${{github.event.inputs.version}}
-  BUILD_NUMBER: ${{github.event.inputs.version}}
+  BUILD_NUMBER: ${{github.event.inputs.build_number}}
   WIN_CODESIGN_BASE64: ${{secrets.WIN_CODESIGN_BASE64}}
   WIN_CODESIGN_PASSWORD: ${{secrets.WIN_CODESIGN_PASSWORD}}
 
