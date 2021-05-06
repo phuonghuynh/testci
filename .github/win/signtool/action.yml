@@ -13,14 +13,7 @@ runs:
       shell: bash
       working-directory: .github/tools
       run: |
-        $SIGNTOOL_B64="wincodesign.b64"
-        $SIGNTOOL_PFX="wincodesign.pfx"
-
-        certutil -decode $SIGNTOOL_B64 $SIGNTOOL_PFX
-        certutil -f -user -p "${{secrets.WIN_CODESIGN_PASSWORD}}" -importpfx $SIGNTOOL_PFX NoRoot
-
-        $SIGNTOOL_PFX=(Resolve-Path -Path $SIGNTOOL_PFX | foreach { $_.Path })
-        echo "SIGNTOOL_PFX=$SIGNTOOL_PFX" >> $GITHUB_ENV
+        echo "${{secrets.WIN_CODESIGN_BASE64}}" > wincodesign.b64
 
 #runs:
 #  using: "composite"
