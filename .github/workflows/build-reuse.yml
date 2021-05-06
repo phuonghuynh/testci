@@ -33,7 +33,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/win/signtool
+        id: test
       - name: debug
         shell: bash
         run: |
-          echo ${{env.SIGNTOOL_PFX}}
+          echo ${{env.SIGNTOOL_PFX1}}
+          echo ${{steps.test.outputs.SIGNTOOL_PFX}}

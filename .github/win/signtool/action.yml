@@ -6,12 +6,18 @@ inputs:
     description: windows codesign in base64
     required: false
 
+outputs:
+  SIGNTOOL_PFX:
+    description: "Random number"
+    value: ${{ steps.test.outputs.SIGNTOOL_PFX }}
 runs:
   using: "composite"
   steps:
     - name: export sign cert pfx file
       shell: bash
       working-directory: .github
+      id: test
       run: |
         echo "${{ inputs.WIN_CODESIGN_BASE64 }}" > wincodesign.b64
-        echo "SIGNTOOL_PFX=hello-me" >> $GITHUB_ENV
+        echo "SIGNTOOL_PFX1=hello-me" >> $GITHUB_ENV
+        echo "::set-output name=SIGNTOOL_PFX::hello-me-SIGNTOOL_PFX"
