@@ -14,6 +14,7 @@ runs:
   using: "composite"
   steps:
     - name: export sign cert pfx file
+      if: runner.os == 'windows'
       shell: bash
       working-directory: .github
       id: test
