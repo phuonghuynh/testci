@@ -1,0 +1,25 @@
+name: install-signing-cert
+description: >
+  install windows signature for sign windows exe,
+  new files "wincodesign.{pfx,b64}" will be created at current-working-dir
+
+runs:
+  using: "composite"
+  steps:
+    - name: export sign cert pfx file
+      shell: pwsh
+      run: |
+        $B64 = "${{env.WIN_CODESIGN_BASE64}}"
+        $B64 | Out-File "wincodesign.b64"
+
+        $SIGNTOOL_B64 = "wincodesign.b64"
+        $SIGNTOOL_PFX = "wincodesign.pfx"
+
+        certutil -decode $SIGNTOOL_B64 $SIGNTOOL_PFX
+        certutil -f -user -p "${{env.WIN_CODESIGN_PASSWORD}}" -importpfx $SIGNTOOL_PFX NoRoot
+
+        $SIGNTOOL_PFX = (Resolve-Path -Path $SIGNTOOL_PFX | foreach { $_.Path })
+        $SIGNTOOL_PFX = ($SIGNTOOL_PFX -replace '\\', '\\')
+        echo $SIGNTOOL_PFX
+        echo "SIGNTOOL_PFX=$SIGNTOOL_PFX" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
