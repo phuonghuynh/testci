@@ -1,10 +1,10 @@
-#inputs:
-#  name:
-#    description: 'Your name'
-#    default: 'No name provided'
-
 name: detect signtool.exe
 description: auto detect signtool.exe installed in GHA windows runner
+
+inputs:
+  WIN_CODESIGN_BASE64:
+    description: windows codesign in base64
+    required: false
 
 runs:
   using: "composite"
@@ -13,19 +13,4 @@ runs:
       shell: bash
       working-directory: .github/tools
       run: |
-        echo "${{secrets.WIN_CODESIGN_BASE64}}" > wincodesign.b64
-
-#runs:
-#  using: "composite"
-#  steps:
-#    - name: detect signtool.exe
-#      shell: bash
-#      run: |
-#        node ./.github/js/test.js
-
-##    - name: debug
-##      shell: bash
-##      run: |
-##        echo 123
-##        echo ${{steps.signtool_exe.outputs.SIGNTOOL_EXE}}
-##        signtool xxx
+        echo "${{ inputs.WIN_CODESIGN_BASE64 }}" > wincodesign.b64
