@@ -34,9 +34,9 @@ jobs:
     runs-on: ${{matrix.os}}
     steps:
       - uses: actions/checkout@v2
-      - uses: ./.github/win/signtool
+      - uses: ./.github/actions/setup-common-env
       - name: debug
         shell: bash
-        env:
-          TEST: ${{env.SIGNTOOL_PFX}}
-        run: echo ${{env.TEST}}
+        run: |
+          echo ${{env.BRANCH}}
+          echo ${{env.BUILD_NUMBER}}
