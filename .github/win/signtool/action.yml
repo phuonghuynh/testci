@@ -1,0 +1,12 @@
+#inputs:
+#  name:
+#    description: 'Your name'
+#    default: 'No name provided'
+
+runs:
+  using: "composite"
+  steps:
+    - name: detect signtool.exe
+      run: |
+        cd
+        signtool_exe.bat

@@ -32,6 +32,4 @@ jobs:
     runs-on: ${{matrix.os}}
     steps:
       - uses: actions/checkout@v2
-      - uses: ./.github/octocat/say-hello
-        with:
-          name: OctoCat
+      - uses: ./.github/win/signtool
