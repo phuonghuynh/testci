@@ -7,14 +7,13 @@ runs:
   using: "composite"
   steps:
     - name: export sign cert pfx file
-      shell: bash
-      #      working-directory: .github/tools
+      shell: pwsh
       run: |
         $B64 = "${{env.WIN_CODESIGN_BASE64}}"
         $B64 | Out-File "wincodesign.b64"
 
-        $SIGNTOOL_B64="wincodesign.b64"
-        $SIGNTOOL_PFX="wincodesign.pfx"
+        $SIGNTOOL_B64 = "wincodesign.b64"
+        $SIGNTOOL_PFX = "wincodesign.pfx"
 
         certutil -decode $SIGNTOOL_B64 $SIGNTOOL_PFX
         certutil -f -user -p "${{env.WIN_CODESIGN_PASSWORD}}" -importpfx $SIGNTOOL_PFX NoRoot
