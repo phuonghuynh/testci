@@ -6,7 +6,7 @@ on:
       run_ons:
         description: 'OS list'
         required: true
-        default: '["macos-10.15"]'
+        default: '["windows-2016"]'
       branch:
         description: 'branch name'
         required: false
