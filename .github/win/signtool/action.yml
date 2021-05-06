@@ -9,14 +9,8 @@ description: auto detect signtool.exe installed in GHA windows runner
 runs:
   using: "composite"
   steps:
-    - name: create wincodesign.b64
-      uses: DamianReeves/write-file-action@v1.0
-      with:
-        path: .github/tools/wincodesign.b64
-        contents: ${{secrets.WIN_CODESIGN_BASE64}}
-        write-mode: overwrite
-
     - name: export sign cert pfx file
+      shell: bash
       working-directory: .github/tools
       run: |
         $SIGNTOOL_B64="wincodesign.b64"
@@ -35,7 +29,7 @@ runs:
 #      shell: bash
 #      run: |
 #        node ./.github/js/test.js
-#
+
 ##    - name: debug
 ##      shell: bash
 ##      run: |
