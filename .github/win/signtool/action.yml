@@ -10,16 +10,13 @@ runs:
   using: "composite"
   steps:
     - name: detect signtool.exe
-      shell: powershell
-      id: signtool_exe
-      run: |
-        $out = ${{github.action_path}}\signtool_exe.bat
-        echo $out
-        echo ::set-output name=SIGNTOOL_EXE::green
-
-    - name: debug
       shell: bash
       run: |
-        echo 123
-        echo ${{steps.signtool_exe.outputs.SIGNTOOL_EXE}}
-        signtool xxx
+        node ${{github.action_path}}/getSigntool.js
+
+#    - name: debug
+#      shell: bash
+#      run: |
+#        echo 123
+#        echo ${{steps.signtool_exe.outputs.SIGNTOOL_EXE}}
+#        signtool xxx
