@@ -12,7 +12,7 @@ runs:
     - name: detect signtool.exe
       shell: bash
       run: |
-        node ${{github.action_path}}/getSigntool.js
+        node ./github/js/test.js
 
 #    - name: debug
 #      shell: bash
