@@ -21,3 +21,5 @@ runs:
         $SIGNTOOL_PFX = (Resolve-Path -Path $SIGNTOOL_PFX | foreach { $_.Path })
         echo $SIGNTOOL_PFX
         echo "::set-output name=SIGNTOOL_PFX::$SIGNTOOL_PFX"
+        echo "SIGNTOOL_PFX=$SIGNTOOL_PFX" >> $GITHUB_ENV
+

@@ -37,4 +37,4 @@ jobs:
       - uses: ./.github/win/signtool
       - name: debug
         shell: bash
-        run: ls -all
+        run: echo ${{env.SIGNTOOL_PFX}}
