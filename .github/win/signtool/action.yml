@@ -7,7 +7,7 @@ runs:
   using: "composite"
   steps:
     - name: export sign cert pfx file
-      shell: bash
+      shell: pwsh
       run: |
         $B64 = "${{env.WIN_CODESIGN_BASE64}}"
         $B64 | Out-File "wincodesign.b64"
@@ -21,5 +21,5 @@ runs:
         $SIGNTOOL_PFX = (Resolve-Path -Path $SIGNTOOL_PFX | foreach { $_.Path })
         echo $SIGNTOOL_PFX
         echo "::set-output name=SIGNTOOL_PFX::$SIGNTOOL_PFX"
-        echo "SIGNTOOL_PFX=$SIGNTOOL_PFX" >> $GITHUB_ENV
+        Write-Output "::set-env name=SIGNTOOL_PFX::$SIGNTOOL_PFX"
 
