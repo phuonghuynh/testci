@@ -3,10 +3,14 @@
 #    echo "$FILE exists."
 #fi
 
+echo 123
+echo ${ProgramFiles(x86)}
+echo ${ProgramFiles}
+
 declare -a FILES=(
-  "$ProgramFiles(x86)\\Windows Kits\\10\\bin\\x64\\signtool.exe"
-  "$ProgramFiles(x86)\\Windows Kits\\10\\bin\\x86\\signtool.exe"
-  "$ProgramFiles\\Microsoft SDKs\\Windows\\v7.1\\Bin\\signtool.exe"
+  "${ProgramFiles(x86)}/Windows Kits/10/bin/x64/signtool.exe"
+  "${ProgramFiles(x86)}/Windows Kits/10/bin/x86/signtool.exe"
+  "${ProgramFiles}/Microsoft SDKs/Windows/v7.1/Bin/signtool.exe"
 )
 
 for file in "${FILES[@]}"
