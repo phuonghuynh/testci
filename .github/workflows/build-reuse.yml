@@ -33,5 +33,5 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: octocat/say-hello@v1
-      with:
-        name: OctoCat
+        with:
+          name: OctoCat
