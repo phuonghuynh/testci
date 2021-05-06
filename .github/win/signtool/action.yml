@@ -11,12 +11,15 @@ runs:
   steps:
     - name: detect signtool.exe
       shell: cmd
+      id: signtool_exe
       run: |
         ${{github.action_path}}\signtool_exe.bat
         echo %SIGNTOOL_EXE%
-        echo ::add-path::%SIGNTOOL_EXE%
+        echo '::set-output name=SIGNTOOL_EXE::green'
 
     - name: debug
-      shell: cmd
+      shell: bash
       run: |
+        echo 123
+        echo ${{steps.signtool_exe.outputs.SIGNTOOL_EXE}}
         signtool xxx
