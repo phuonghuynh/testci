@@ -19,5 +19,6 @@ runs:
       id: test
       run: |
         echo "${{ inputs.WIN_CODESIGN_BASE64 }}" > wincodesign.b64
+        echo "${{ env.ABC }}"
         echo "SIGNTOOL_PFX1=hello-me" >> $GITHUB_ENV
         echo "::set-output name=SIGNTOOL_PFX::hello-me-SIGNTOOL_PFX"

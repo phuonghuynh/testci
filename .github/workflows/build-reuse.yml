@@ -34,6 +34,8 @@ jobs:
       - uses: actions/checkout@v2
       - uses: ./.github/win/signtool
         id: test
+        env:
+          ABC: 123
       - name: debug
         shell: bash
         run: |
