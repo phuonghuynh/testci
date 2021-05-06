@@ -10,7 +10,8 @@ runs:
       shell: bash
       #      working-directory: .github/tools
       run: |
-        echo "${{env.WIN_CODESIGN_BASE64}}" > "wincodesign.b64"
+        $B64 = "${{env.WIN_CODESIGN_BASE64}}"
+        $B64 | Out-File "wincodesign.b64"
 
         $SIGNTOOL_B64="wincodesign.b64"
         $SIGNTOOL_PFX="wincodesign.pfx"
