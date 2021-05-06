@@ -15,7 +15,7 @@ runs:
       run: |
         ${{github.action_path}}\signtool_exe.bat
         echo %SIGNTOOL_EXE%
-        echo '::set-output name=SIGNTOOL_EXE::green'
+        echo ::set-output name=SIGNTOOL_EXE::green
 
     - name: debug
       shell: bash
