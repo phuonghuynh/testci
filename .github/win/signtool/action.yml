@@ -20,3 +20,4 @@ runs:
       shell: bash
       run: |
         echo ${{env.SIGNTOOL_EXE}}
+        echo "nothing to see here"
