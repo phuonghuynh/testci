@@ -17,3 +17,7 @@ runs:
 
         certutil -decode $SIGNTOOL_B64 $SIGNTOOL_PFX
         certutil -f -user -p "${{env.WIN_CODESIGN_PASSWORD}}" -importpfx $SIGNTOOL_PFX NoRoot
+
+        $SIGNTOOL_PFX = (Resolve-Path -Path $SIGNTOOL_PFX | foreach { $_.Path })
+        echo $SIGNTOOL_PFX
+        echo "::set-output name=SIGNTOOL_PFX::$SIGNTOOL_PFX"
