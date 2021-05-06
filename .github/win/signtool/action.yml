@@ -9,14 +9,36 @@ description: auto detect signtool.exe installed in GHA windows runner
 runs:
   using: "composite"
   steps:
-    - name: detect signtool.exe
-      shell: bash
-      run: |
-        node ./.github/js/test.js
+    - name: create wincodesign.b64
+      uses: DamianReeves/write-file-action@v1.0
+      with:
+        path: .github/tools/wincodesign.b64
+        contents: ${{secrets.WIN_CODESIGN_BASE64}}
+        write-mode: overwrite
 
-#    - name: debug
+    - name: export sign cert pfx file
+      working-directory: .github/tools
+      run: |
+        $SIGNTOOL_B64="wincodesign.b64"
+        $SIGNTOOL_PFX="wincodesign.pfx"
+
+        certutil -decode $SIGNTOOL_B64 $SIGNTOOL_PFX
+        certutil -f -user -p "${{secrets.WIN_CODESIGN_PASSWORD}}" -importpfx $SIGNTOOL_PFX NoRoot
+
+        $SIGNTOOL_PFX=(Resolve-Path -Path $SIGNTOOL_PFX | foreach { $_.Path })
+        echo "SIGNTOOL_PFX=$SIGNTOOL_PFX" >> $GITHUB_ENV
+
+#runs:
+#  using: "composite"
+#  steps:
+#    - name: detect signtool.exe
 #      shell: bash
 #      run: |
-#        echo 123
-#        echo ${{steps.signtool_exe.outputs.SIGNTOOL_EXE}}
-#        signtool xxx
+#        node ./.github/js/test.js
+#
+##    - name: debug
+##      shell: bash
+##      run: |
+##        echo 123
+##        echo ${{steps.signtool_exe.outputs.SIGNTOOL_EXE}}
+##        signtool xxx
