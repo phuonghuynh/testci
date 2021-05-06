@@ -13,7 +13,7 @@ runs:
       shell: bash
       id: detect_signtool_exe
       run: |
-        ${{github.action_path}}\signtool_exe.sh
+        ${{github.action_path}}\\signtool_exe.sh
         echo %SIGNTOOL_EXE%
         echo '::set-output name=ABC::ABC1'
         echo '::set-output name=SIGNTOOL_EXE::%SIGNTOOL_EXE%'
