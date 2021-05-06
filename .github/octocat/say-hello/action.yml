@@ -6,7 +6,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: echo Hello ${{ inputs.name }}.
+    - run: echo >> Hello ${{ inputs.name }}.
       shell: bash
-    - run: echo "Nice to meet you!"
+    - run: echo ">>  Nice to meet you!"
       shell: pwsh
