@@ -10,24 +10,13 @@ runs:
   using: "composite"
   steps:
     - name: detect signtool.exe
-      shell: bash
-      id: detect_signtool_exe
+      shell: cmd
       run: |
-        ${{github.action_path}}/signtool_exe.sh
+        ${{github.action_path}}\signtool_exe.bat
         echo %SIGNTOOL_EXE%
-        echo '::set-output name=ABC::ABC1'
-        echo '::set-output name=SIGNTOOL_EXE::%SIGNTOOL_EXE%'
-
-    - name: set env
-      shell: bash
-      run: |
-        echo "debug ABC: ${{steps.detect_signtool_exe.outputs.ABC}}"
-        echo "debug output: ${{steps.detect_signtool_exe.outputs.SIGNTOOL_EXE}}"
-        SIGNTOOL_EXE=${{steps.detect_signtool_exe.outputs.SIGNTOOL_EXE}}
-        echo "debug: SIGNTOOL_EXE=${{steps.detect_signtool_exe.outputs.SIGNTOOL_EXE}}"
-        echo 'SIGNTOOL_EXE="${SIGNTOOL_EXE}"' >> $GITHUB_ENV
+        echo ::add-path::%SIGNTOOL_EXE%
 
     - name: debug
-      shell: bash
+      shell: cmd
       run: |
-        echo "SIGNTOOL_EXE=${{env.SIGNTOOL_EXE}}"
+        signtool xxx
