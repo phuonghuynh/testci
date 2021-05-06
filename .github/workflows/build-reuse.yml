@@ -23,6 +23,8 @@ env:
   _GITHUB_PAT: ${{secrets._GITHUB_PAT}}
   VER_NUMBER: ${{github.event.inputs.version}}
   BUILD_NUMBER: ${{github.event.inputs.version}}
+  WIN_CODESIGN_BASE64: ${{secrets.WIN_CODESIGN_BASE64}}
+  WIN_CODESIGN_PASSWORD: ${{secrets.WIN_CODESIGN_PASSWORD}}
 
 jobs:
   make-reuse:
@@ -33,11 +35,3 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/win/signtool
-        id: test
-        env:
-          ABC: 123
-      - name: debug
-        shell: bash
-        run: |
-          echo ${{env.SIGNTOOL_PFX1}}
-          echo ${{steps.test.outputs.SIGNTOOL_PFX}}
