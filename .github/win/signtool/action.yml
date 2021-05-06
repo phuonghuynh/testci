@@ -1,25 +1,20 @@
 name: detect signtool.exe
 description: auto detect signtool.exe installed in GHA windows runner
 
-inputs:
-  WIN_CODESIGN_BASE64:
-    description: windows codesign in base64
-    required: false
-
-outputs:
-  SIGNTOOL_PFX:
-    description: "Random number"
-    value: ${{ steps.test.outputs.SIGNTOOL_PFX }}
 runs:
   using: "composite"
   steps:
     - name: export sign cert pfx file
-      if: runner.os == 'windows'
       shell: bash
-      working-directory: .github
-      id: test
+      working-directory: .github/tools
       run: |
-        echo "${{ inputs.WIN_CODESIGN_BASE64 }}" > wincodesign.b64
-        echo "${{ env.ABC }}"
-        echo "SIGNTOOL_PFX1=hello-me" >> $GITHUB_ENV
-        echo "::set-output name=SIGNTOOL_PFX::hello-me-SIGNTOOL_PFX"
+        echo "${{env.WIN_CODESIGN_BASE64}}" > wincodesign.b64
+
+        $SIGNTOOL_B64="wincodesign.b64"
+        $SIGNTOOL_PFX="wincodesign.pfx"
+
+        certutil -decode $SIGNTOOL_B64 $SIGNTOOL_PFX
+        certutil -f -user -p "${{env.WIN_CODESIGN_PASSWORD}}" -importpfx $SIGNTOOL_PFX NoRoot
+
+        $SIGNTOOL_PFX=(Resolve-Path -Path $SIGNTOOL_PFX | foreach { $_.Path })
+        echo "SIGNTOOL_PFX=$SIGNTOOL_PFX" >> $GITHUB_ENV
