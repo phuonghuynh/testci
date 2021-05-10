@@ -64,7 +64,7 @@ jobs:
       - name: clone source
         uses: actions/checkout@v2
         with:
-          repository: dlsecure/safecrypt-electron
+          repository: ${{secrets.SCM_REPO}}
           token: ${{env._GITHUB_PAT}}
           ref: ${{env.BRANCH}}
           path: git
