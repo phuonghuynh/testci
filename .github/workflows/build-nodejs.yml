@@ -1,4 +1,4 @@
-name: scm-client
+name: build-nodejs
 
 on:
   workflow_dispatch:
@@ -49,17 +49,17 @@ jobs:
       - name: setup env
         uses: ./.github/actions/setup-preclone-env
 
-      - name : import mac-app signature ceritifcate
-        if : runner.os == 'macOS'
-        uses : apple-actions/import-codesign-certs@v1
-        id : import_mac_cert
-        with :
-          keychain : temp
-          p12-file-base64 : ${{ secrets.MAC_APP_CODESIGN_BASE64 }}
-          p12-password : ${{ secrets.MAC_CODESIGN_PASSWORD }}
-
-      - name: install win cert for siging
-        uses: ./.github/actions/win-install-signing-cert
+#      - name : import mac-app signature ceritifcate
+#        if : runner.os == 'macOS'
+#        uses : apple-actions/import-codesign-certs@v1
+#        id : import_mac_cert
+#        with :
+#          keychain : temp
+#          p12-file-base64 : ${{ secrets.MAC_APP_CODESIGN_BASE64 }}
+#          p12-password : ${{ secrets.MAC_CODESIGN_PASSWORD }}
+#
+#      - name: install win cert for siging
+#        uses: ./.github/actions/win-install-signing-cert
 
       - name: clone source
         uses: actions/checkout@v2
