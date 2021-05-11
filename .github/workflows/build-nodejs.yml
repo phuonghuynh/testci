@@ -114,8 +114,6 @@ jobs:
         env:
           DEBUG: "electron-builder"
           GITHUB_TOKEN: ${{env._GITHUB_PAT}}
-          CSC_LINK: ${{env.SIGNTOOL_PFX}}
-          CSC_KEY_PASSWORD: ${{secrets.WIN_CODESIGN_PASSWORD}}
           SIGNTOOL_ARGS : >
             /f "${{env.SIGNTOOL_PFX}}"
             /p "${{secrets.WIN_CODESIGN_PASSWORD}}"
