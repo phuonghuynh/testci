@@ -39,3 +39,4 @@ jobs:
         shell: bash
         run: |
           ls -all ./.github/tools
+          jira --help
