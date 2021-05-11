@@ -14,5 +14,10 @@ runs :
   steps:
     - shell: pwsh
       run: |
-        Invoke-WebRequest https://github.com/go-jira/jira/releases/download/v1.0.27/jira-windows-amd64.exe -OutFile .\.github\tools\jira.exe
-
+        $GO_JIRA_URL = "https://github.com/go-jira/jira/releases/download/v1.0.27/jira-darwin-amd64"
+        $EXT = ""
+        if ($IsWindows -or $ENV:OS) {
+          $GO_JIRA_URL = "https://github.com/go-jira/jira/releases/download/v1.0.27/jira-windows-amd64.exe"
+          $EXT = ".exe"
+        }
+        Invoke-WebRequest $GO_JIRA_URL -OutFile ".\.github\tools\jira$EXT"

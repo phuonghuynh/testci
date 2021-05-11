@@ -4,8 +4,7 @@ description: detect and setup env $BUILD_NUMBER, $BRANCH
 runs:
   using: "composite"
   steps:
-    - name: export sign cert pfx file
-      shell: bash
+    - shell: bash
       run: |
         REF=${GITHUB_REF##*/}
         BRANCH="${{env.BRANCH}}"
