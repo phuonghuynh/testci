@@ -21,6 +21,9 @@ on:
         description : 'update server url'
         required : false
         default : https://media.datalocker.com/downloads/safecrypt/updates
+      jira_build_issue:
+        description: JIRA issue_id to attach the artifacts
+        required: true
 
 env:
   _GITHUB_PAT: ${{secrets._GITHUB_PAT}}

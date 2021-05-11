@@ -12,11 +12,7 @@ inputs:
 runs :
   using: "composite"
   steps:
-    - shell: bash
+    - shell: pwsh
       run: |
-        REF=${GITHUB_REF##*/}
-        BRANCH="${{github.event.inputs.branch}}"
-        BRANCH=${BRANCH:-${REF}}
-        echo "BRANCH=${BRANCH}" >> $GITHUB_ENV
-        [ -z "$BUILD_NUMBER" ] && BUILD_NUMBER=${{github.run_number}}
-        echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
+        Invoke-WebRequest https://github.com/go-jira/jira/releases/download/v1.0.27/jira-windows-amd64.exe -OutFile .\.github\tools\jira.exe
+
