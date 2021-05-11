@@ -125,6 +125,11 @@ jobs:
             /a
             /v
 
+      - name: ">> debug"
+        run: |
+          echo "outputs: ${{toJSON(steps.run_gradlew_build.outputs)}}"
+          echo "exit-code: ${{steps.run_gradlew_build.outputs.exit_code}}"
+
       - name: upload logger
         uses: actions/upload-artifact@v2
         with:
