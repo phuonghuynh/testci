@@ -60,6 +60,9 @@ jobs:
              ${{env.PBWINDRIVER_REPO}} \
              git
 
+      - name: ">> debug"
+        run: msbuild
+
       - name: ">> build"
         working-directory: ./git
         shell: cmd
