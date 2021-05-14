@@ -25,6 +25,7 @@ env:
   BUILD_NUMBER: ${{github.event.inputs.build_number}}
   WIN_CODESIGN_BASE64 : ${{secrets.WIN_CODESIGN_BASE64}}
   WIN_CODESIGN_PASSWORD : ${{secrets.WIN_CODESIGN_PASSWORD}}
+  PBWINDRIVER_REPO : ${{secrets.PBWINDRIVER_REPO}}
 
 jobs:
   msbuild:
@@ -38,13 +39,26 @@ jobs:
         with :
           submodules : true
 
-      - uses: ./.github/actions/setup-preclone-env
-      - uses: ./.github/actions/setup-go-jira
-
       - name: install win cert for siging
         uses: ./.github/actions/win-install-signing-cert
 
-      - name: ">> debug"
+      - name: setup ssh
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.ID_RSA_BITBUCKET }}
+          name: id_rsa_bitbucket
+          known_hosts: $${{ secrets.SSH_KNOWN_HOSTS }}
+          config: ${{ secrets.SSH_CONFIG }}
+
+      - name: clone source
+        shell: bash
         run: |
-          echo "outputs: ${{toJSON(steps.run_gradlew_build.outputs)}}"
-          echo "exit-code: ${{steps.run_gradlew_build.outputs.exit_code}}"
+          git clone --single-branch \
+             --branch ${{github.event.inputs.branch}} \
+             --depth 1 --recurse-submodules \
+             ${{env.PBWINDRIVER_REPO}} \
+             git
+
+      - name: ">> build"
+        run: |
+          msbuild
