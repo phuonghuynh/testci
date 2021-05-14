@@ -40,28 +40,27 @@ jobs:
         with :
           submodules : true
 
+      - name: (preclone) setup env
+        uses: ./.github/actions/setup-preclone-env
 #      - name: install win cert for siging
 #        uses: ./.github/actions/win-install-signing-cert
 
-      - name: setup ssh
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.ID_RSA_BITBUCKET }}
-          name: id_rsa_bitbucket
-          known_hosts: $${{ secrets.SSH_KNOWN_HOSTS }}
-          config: ${{ secrets.SSH_CONFIG }}
-
-      - name: clone source
-        shell: bash
-        run: |
-          git clone --single-branch \
-             --branch ${{github.event.inputs.branch}} \
-             --depth 1 --recurse-submodules \
-             ${{env.PBWINDRIVER_REPO}} \
-             git
-
-      - name: ">> debug"
-        run: msbuild
+#      - name: setup ssh
+#        uses: shimataro/ssh-key-action@v2
+#        with:
+#          key: ${{ secrets.ID_RSA_BITBUCKET }}
+#          name: id_rsa_bitbucket
+#          known_hosts: $${{ secrets.SSH_KNOWN_HOSTS }}
+#          config: ${{ secrets.SSH_CONFIG }}
+#
+#      - name: clone source
+#        shell: bash
+#        run: |
+#          git clone --single-branch \
+#             --branch ${{github.event.inputs.branch}} \
+#             --depth 1 --recurse-submodules \
+#             ${{env.PBWINDRIVER_REPO}} \
+#             git
 
       - name: ">> build"
         working-directory: ./git
