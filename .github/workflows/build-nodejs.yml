@@ -65,4 +65,6 @@ jobs:
       - name: ">> build"
         working-directory: ./git
         shell: powershell
-        run: build.ps1
+        run: |
+          dir
+          build.ps1
