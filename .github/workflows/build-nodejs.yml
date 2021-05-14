@@ -66,5 +66,10 @@ jobs:
         working-directory: ./git
         shell: powershell
         run: |
-          dir
-          build.ps1
+          .\build.ps1
+
+      - name: upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifacts-${{runner.os}}
+          path: git/bin
