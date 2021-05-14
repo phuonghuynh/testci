@@ -17,10 +17,7 @@ runs:
 
     - shell: powershell
       run: |
-        $MSBUILD = ("${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" `
-            -latest -prerelease -products * `
-            -requires Microsoft.Component.MSBuild `
-            -find MSBuild\**\Bin\MSBuild.exe)
+        $MSBUILD = ("${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -prerelease -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe)
         $MSBUILD = ($MSBUILD -replace '\\', '\\')
         echo "MSBUILD=$MSBUILD" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
