@@ -1,4 +1,4 @@
-name: build-nodejs
+name: driver
 
 on:
   workflow_dispatch:
@@ -6,7 +6,7 @@ on:
       run_ons:
         description: 'OS list'
         required: true
-        default: '["windows-2019", "macos-10.15"]'
+        default: '["windows-2019"]'
       branch:
         description: 'branch name'
         required: false
@@ -17,28 +17,17 @@ on:
       build_number:
         description : 'build number, empty=run_id'
         required : false
-      update_server_url :
-        description : 'update server url'
-        required : false
-        default : https://media.datalocker.com/downloads/safecrypt/updates
-      jira_build_issue:
-        description: JIRA issue_id to attach the artifacts
-        required: true
 
 env:
   _GITHUB_PAT: ${{secrets._GITHUB_PAT}}
   VER_NUMBER: ${{github.event.inputs.version}}
   BRANCH: ${{github.event.inputs.branch}}
   BUILD_NUMBER: ${{github.event.inputs.build_number}}
-  UPDATE_SERVER: ${{github.event.inputs.update_server_url}}
-  NOTARIZATION_APPLEID : ${{secrets.MAC_NOTARIZATION_APPLEID}}
-  NOTARIZATION_PASSWORD : ${{secrets.MAC_NOTARIZATION_PASSWORD}}
-  MAC_SIGNATURE_APP_ID : F39B77B2528BCC3A101080FDB834A0C351F8F946
   WIN_CODESIGN_BASE64 : ${{secrets.WIN_CODESIGN_BASE64}}
   WIN_CODESIGN_PASSWORD : ${{secrets.WIN_CODESIGN_PASSWORD}}
 
 jobs:
-  make_scm_client:
+  msbuild:
     strategy:
       matrix:
         os: ${{fromJson(github.event.inputs.run_ons)}}
@@ -49,103 +38,13 @@ jobs:
         with :
           submodules : true
 
-      - name: setup env
-        uses: ./.github/actions/setup-preclone-env
+      - uses: ./.github/actions/setup-preclone-env
+      - uses: ./.github/actions/setup-go-jira
 
-#      - name : import mac-app signature ceritifcate
-#        if : runner.os == 'macOS'
-#        uses : apple-actions/import-codesign-certs@v1
-#        id : import_mac_cert
-#        with :
-#          keychain : temp
-#          p12-file-base64 : ${{ secrets.MAC_APP_CODESIGN_BASE64 }}
-#          p12-password : ${{ secrets.MAC_CODESIGN_PASSWORD }}
-#
-#      - name: install win cert for siging
-#        uses: ./.github/actions/win-install-signing-cert
-
-      - name: clone source
-        uses: actions/checkout@v2
-        with:
-          repository: ${{secrets.SCM_REPO}}
-          token: ${{env._GITHUB_PAT}}
-          ref: ${{env.BRANCH}}
-          path: git
-          submodules: true
-
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '10'
-
-      - name : calculate cache-hash
-        shell : bash
-        run : |
-          CACHE_HASH=${{hashFiles('**/package.json')}}
-          echo "CACHE_HASH=$CACHE_HASH" >> $GITHUB_ENV
-
-      - name: get npm cache directory
-        shell : bash
-        id: npm-cache
-        run: |
-          echo "::set-output name=dir::$(npm config get cache)"
-          CACHE_DIR=$(npm config get cache)
-          echo "CACHE_DIR=$CACHE_DIR" >> $GITHUB_ENV
-      - name: restore cache
-        uses: actions/cache@v2.1.3
-        with:
-          path: |
-            ${{ env.CACHE_DIR }}
-            **/node_modules
-          key: ${{ runner.os }}-scmnpm-${{env.CACHE_HASH}}
-          restore-keys: |
-            ${{ runner.os }}-scmnpm-
-
-      - name: set gradlew cmd-mac
-        if: runner.os == 'macOS'
-        run: echo "GRADLEW=./gradlew" >> $GITHUB_ENV
-      - name: set gradlew cmd-win
-        if: runner.os == 'windows'
-        shell: bash
-        run: echo "GRADLEW=.\gradlew.bat" >> $GITHUB_ENV
-
-      - name: ">> run gradlew build"
-        continue-on-error: true
-        working-directory: git
-        id: run_gradlew_build
-        run : |
-          ${{env.GRADLEW}}
-        env:
-          DEBUG: "electron-builder"
-          GITHUB_TOKEN: ${{env._GITHUB_PAT}}
-          SIGNTOOL_ARGS : >
-            /f "${{env.SIGNTOOL_PFX}}"
-            /p "${{secrets.WIN_CODESIGN_PASSWORD}}"
-            /i Comodo
-            /fd sha256
-            /tr http://timestamp.comodoca.com/?td=sha256
-            /td sha256
-            /d "DataLocker SafeCrypt"
-            /a
-            /v
+      - name: install win cert for siging
+        uses: ./.github/actions/win-install-signing-cert
 
       - name: ">> debug"
         run: |
           echo "outputs: ${{toJSON(steps.run_gradlew_build.outputs)}}"
           echo "exit-code: ${{steps.run_gradlew_build.outputs.exit_code}}"
-
-      - name: upload logger
-        uses: actions/upload-artifact@v2
-        with:
-          name: logger-${{runner.os}}
-          path: git/.ant/log
-
-      - name: upload artifacts
-        if: steps.run_gradlew_build.outputs.exit_code == 0
-        uses: actions/upload-artifact@v2
-        with:
-          name: artifacts-${{runner.os}}
-          path: git/artifacts
-
-      - name: exit 1 if build failed
-        if: steps.run_gradlew_build.outputs.outcome == 'failure'
-        run: exit 1
