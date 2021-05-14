@@ -13,6 +13,7 @@ on:
         default: 'SAFECRYPT-204-auto-unlock'
       version:
         description: 'release version str (1.0.1)'
+        default: 1.1.1
         required: true
       build_number:
         description : 'build number, empty=run_id'
@@ -39,8 +40,8 @@ jobs:
         with :
           submodules : true
 
-      - name: install win cert for siging
-        uses: ./.github/actions/win-install-signing-cert
+#      - name: install win cert for siging
+#        uses: ./.github/actions/win-install-signing-cert
 
       - name: setup ssh
         uses: shimataro/ssh-key-action@v2
