@@ -10,7 +10,7 @@ on:
       branch:
         description: 'branch name'
         required: false
-        default: 'SAFECRYPT-204-auto-unlock'
+        default: 'fix-1.5-long_usb_strings_truncation'
       version:
         description: 'release version str (1.0.1)'
         default: 1.1.1
