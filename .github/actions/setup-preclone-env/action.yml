@@ -14,7 +14,3 @@ runs:
         BUILD_NUMBER="${{env.BUILD_NUMBER}}"
         [ -z "$BUILD_NUMBER" ] && BUILD_NUMBER=${{github.run_number}}
         echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
-
-    - shell: powershell
-      run: |
-        &"${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -prerelease -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe
