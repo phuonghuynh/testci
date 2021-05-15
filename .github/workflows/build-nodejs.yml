@@ -59,8 +59,8 @@ jobs:
         shell: bash
         working-directory: git
         run: |
-          ls -all bin
-          ls -all bin/Release
+          ls -all bin/x64
+          ls -all bin/Win32
           ls -all sign
 
       - name: upload artifacts
