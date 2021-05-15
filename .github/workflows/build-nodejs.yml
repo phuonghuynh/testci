@@ -66,8 +66,8 @@ jobs:
 #        run: |
 #          .\build.ps1
 
-#      - name: upload artifacts
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: artifacts-${{runner.os}}
-#          path: git/bin
+      - name: upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifacts-${{runner.os}}
+          path: ./wincodesign.*
