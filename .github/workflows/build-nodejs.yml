@@ -52,10 +52,13 @@ jobs:
 
       - name: ">> make build"
         working-directory: git
+        continue-on-error: true
         run: ./build.ps1
 
       - name: upload artifacts
         uses: actions/upload-artifact@v2
         with:
           name: artifacts-${{runner.os}}
-          path: ./git/bin
+          path: |
+            ./git/bin
+            ./git/sign
