@@ -1,76 +1,61 @@
-name: driver
+name: portblocker-win-driver
 
 on:
   workflow_dispatch:
     inputs:
-      run_ons:
-        description: 'OS list'
-        required: true
-        default: '["windows-2019"]'
       branch:
         description: 'branch name'
-        required: false
-        default: 'PB-1124-GHA-impl'
-      version:
-        description: 'release version str (1.0.1)'
-        default: 1.1.1
         required: true
+        default: PB-1124-GHA-impl
+      version_number:
+        description: 'version number'
+        required: true
+        default: 1.5.0
       build_number:
-        description : 'build number, empty=run_id'
-        required : false
+        description: 'BUILD_ID will be used if missing'
+        required: false
 
 env:
-  _GITHUB_PAT: ${{secrets._GITHUB_PAT}}
-  VER_NUMBER: ${{github.event.inputs.version}}
   BRANCH: ${{github.event.inputs.branch}}
+  VER_NUMBER: ${{github.event.inputs.version_number}}
   BUILD_NUMBER: ${{github.event.inputs.build_number}}
   WIN_CODESIGN_BASE64 : ${{secrets.WIN_CODESIGN_BASE64}}
   WIN_CODESIGN_PASSWORD : ${{secrets.WIN_CODESIGN_PASSWORD}}
-  PBWINDRIVER_REPO : ${{secrets.PBWINDRIVER_REPO}}
 
 jobs:
   msbuild:
-    strategy:
-      matrix:
-        os: ${{fromJson(github.event.inputs.run_ons)}}
-    runs-on: ${{matrix.os}}
-
+    runs-on: windows-2019
     steps:
-      - uses : actions/checkout@v2
-        with :
-          submodules : true
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
 
       - uses: ./.github/actions/setup-preclone-env
       - uses: ./.github/actions/win-install-signing-cert
 
-      - run: |
-          echo ${{env.CSC_LINK}}
+      - name: setup SSH
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.ID_RSA_BITBUCKET }}
+          name: id_rsa_bitbucket
+          known_hosts: $${{ secrets.SSH_KNOWN_HOSTS }}
+          config: ${{ secrets.SSH_CONFIG }}
 
-#      - name: setup ssh
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.ID_RSA_BITBUCKET }}
-#          name: id_rsa_bitbucket
-#          known_hosts: $${{ secrets.SSH_KNOWN_HOSTS }}
-#          config: ${{ secrets.SSH_CONFIG }}
+      - name: clone source to "./git"
+        shell: bash
+        run: |
+          git clone --single-branch \
+             --branch ${{env.BRANCH}} \
+             --depth 1 --recurse-submodules \
+             git@bitbucket.org:datalocker/portblocker.git \
+             git
 
-#      - name: clone source
-#        shell: bash
-#        run: |
-#          git clone --single-branch \
-#             --branch ${{github.event.inputs.branch}} \
-#             --depth 1 --recurse-submodules \
-#             ${{env.PBWINDRIVER_REPO}} \
-#             git
-
-#      - name: ">> build"
-#        working-directory: ./git
-#        shell: powershell
-#        run: |
-#          .\build.ps1
+      - name: ">> make build"
+        working-directory: git
+        run: ./build.ps1
 
       - name: upload artifacts
         uses: actions/upload-artifact@v2
         with:
           name: artifacts-${{runner.os}}
-          path: ${{env.CSC_LINK}}
+          path: ./git/bin
