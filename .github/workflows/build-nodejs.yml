@@ -55,6 +55,14 @@ jobs:
         continue-on-error: true
         run: ./build.ps1
 
+      - name: ">> debug"
+        shell: bash
+        working-directory: git
+        run: |
+          ls -all bin
+          ls -all bin/Release
+          ls -all sign
+
       - name: upload artifacts
         uses: actions/upload-artifact@v2
         with:
