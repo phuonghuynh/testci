@@ -59,8 +59,6 @@ jobs:
         shell: bash
         working-directory: git
         run: |
-          ls -all bin/x64
-          ls -all bin/Win32
           ls -all sign
 
       - name: upload artifacts
@@ -68,5 +66,4 @@ jobs:
         with:
           name: artifacts-${{runner.os}}
           path: |
-            ./git/bin
-            ./git/sign
+            ./git/artifacts
