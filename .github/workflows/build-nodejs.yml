@@ -47,7 +47,7 @@ jobs:
           git clone --single-branch \
              --branch ${{env.BRANCH}} \
              --depth 1 --recurse-submodules \
-             git@bitbucket.org:datalocker/portblocker.git \
+             ${{secrets.PBWINDRIVER_REPO}} \
              git
 
       - name: ">> make build"
