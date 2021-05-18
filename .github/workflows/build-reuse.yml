@@ -37,4 +37,11 @@ jobs:
 
       - name: ">> debug"
         run: |
-          [System.Environment]::OSVersion.Version
+          $Major = [System.Environment]::OSVersion.Version.Major
+          If ($Major -eq 10) {
+            echo "OK"
+          }
+          Else {
+            echo "Requires Win 10 to run"
+            exit 1
+          }
