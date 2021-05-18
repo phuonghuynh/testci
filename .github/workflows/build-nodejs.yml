@@ -53,7 +53,7 @@ jobs:
       - name: ">> make build"
         working-directory: git
         continue-on-error: true
-        run: ./build.ps1
+        run: ./build.ps1 -Sign
 
       - name: ">> debug"
         shell: bash
