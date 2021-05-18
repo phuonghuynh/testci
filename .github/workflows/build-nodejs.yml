@@ -24,67 +24,46 @@ env:
 
 jobs:
   msbuild:
-    runs-on: windows-2016
+    runs-on: windows-2019
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: true
 
       - uses: ./.github/actions/setup-preclone-env
-#      - uses: ./.github/actions/win-install-signing-cert
+      - uses: ./.github/actions/win-install-signing-cert
 
-      - name: create wincodesign.b64
-        if: runner.os == 'windows'
-        uses: DamianReeves/write-file-action@v1.0
+      - name: setup SSH
+        uses: shimataro/ssh-key-action@v2
         with:
-          path: git/wincodesign.b64
-          contents: ${{secrets.WIN_CODESIGN_BASE64}}
-          write-mode: overwrite
-      - name: export sign cert pfx file
-        if: runner.os == 'windows'
-        working-directory: git
-        id: sigtool_pfx
+          key: ${{ secrets.ID_RSA_BITBUCKET }}
+          name: id_rsa_bitbucket
+          known_hosts: $${{ secrets.SSH_KNOWN_HOSTS }}
+          config: ${{ secrets.SSH_CONFIG }}
+
+      - name: clone source to "./git"
+        shell: bash
         run: |
-          $SIGNTOOL_B64="wincodesign.b64"
-          $SIGNTOOL_PFX="wincodesign.pfx"
+          git clone --single-branch \
+             --branch ${{env.BRANCH}} \
+             --depth 1 --recurse-submodules \
+             ${{secrets.PBWINDRIVER_REPO}} \
+             git
 
-          certutil -decode $SIGNTOOL_B64 $SIGNTOOL_PFX
-          certutil -f -user -p "${{secrets.WIN_CODESIGN_PASSWORD}}" -importpfx $SIGNTOOL_PFX NoRoot
+      - name: ">> make build"
+        working-directory: git
+        continue-on-error: true
+        run: ./build.ps1
 
-          $SIGNTOOL_PFX=(Resolve-Path -Path $SIGNTOOL_PFX | foreach { $_.Path })
-          echo "::set-output name=SIGNTOOL_PFX::$SIGNTOOL_PFX"
+      - name: ">> debug"
+        shell: bash
+        working-directory: git
+        run: |
+          ls -all sign
 
-#      - name: setup SSH
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.ID_RSA_BITBUCKET }}
-#          name: id_rsa_bitbucket
-#          known_hosts: $${{ secrets.SSH_KNOWN_HOSTS }}
-#          config: ${{ secrets.SSH_CONFIG }}
-#
-#      - name: clone source to "./git"
-#        shell: bash
-#        run: |
-#          git clone --single-branch \
-#             --branch ${{env.BRANCH}} \
-#             --depth 1 --recurse-submodules \
-#             ${{secrets.PBWINDRIVER_REPO}} \
-#             git
-#
-#      - name: ">> make build"
-#        working-directory: git
-#        continue-on-error: true
-#        run: ./build.ps1
-#
-#      - name: ">> debug"
-#        shell: bash
-#        working-directory: git
-#        run: |
-#          ls -all sign
-#
-#      - name: upload artifacts
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: artifacts-${{runner.os}}
-#          path: |
-#            ./git/artifacts
+      - name: upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifacts-${{runner.os}}
+          path: |
+            ./git/artifacts
