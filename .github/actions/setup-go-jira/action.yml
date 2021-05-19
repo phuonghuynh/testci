@@ -34,9 +34,9 @@ runs :
         $ConfigYmlFilepath = "${{github.action_path}}/.jira.d/config.yml"
         $ConfigYmlContent = (Get-Content -Path $ConfigYmlFilepath)
         gci env:* | sort-object name | ForEach {
-          $Name = $_.Name
+          $Name = '$' + $_.Name
           $Value = $_.Vame
-          $ConfigYmlContent -replace "\$$Name", "$Value"
+          $ConfigYmlContent -replace "$Name", "$Value"
         }
         $ConfigYmlContent | Set-Content -Path $ConfigYmlFilepath
 
