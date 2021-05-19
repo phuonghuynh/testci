@@ -22,12 +22,14 @@ runs :
         }
 
         $ROOT = "./.github/tools/go-jira"
-        $ROOT = ($ROOT | Resolve-Path |  select -ExpandProperty Path)
-        echo "root= $ROOT"
+#        New-Item -Path "$ROOT" -Force
+#        $ROOT = ($ROOT | Resolve-Path |  select -ExpandProperty Path)
+#        echo "root= $ROOT"
 
         $JIRA = "$ROOT/jira$EXT"
         New-Item -Path "$JIRA" -Force
         Invoke-WebRequest $GO_JIRA_URL -OutFile $JIRA
+        $JIRA = ($JIRA | Resolve-Path |  select -ExpandProperty Path)
 
         chmod +x $JIRA
         echo "JIRA=$JIRA" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
@@ -35,13 +37,13 @@ runs :
     - name: create custom command config
       shell: bash
       run: |
-        JIRAD="${{inputs.jirad}}"
-        mkdir -p $JIRAD
-        echo "copy go-jira config to $JIRAD"
-        cp -Rf "${{github.action_path}}/conf/.jira.d" "$JIRAD"
+#        JIRAD="${{inputs.jirad}}"
+#        mkdir -p $JIRAD
+        echo "copy go-jira config to ${{env.USERHOME}}"
+        cp -Rf "${{github.action_path}}/conf/.jira.d" "${{env.USERHOME}}"
 
     - name: ">> test"
       shell: bash
       run: |
         $JIRA version
-        ls -all -R ${{inputs.jirad}}
+        ls -all -R "${{env.USERHOME}}"
