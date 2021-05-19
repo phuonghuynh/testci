@@ -36,7 +36,7 @@ runs :
         gci env:* | sort-object name | ForEach {
           $Name = '$' + $_.Name
           $Value = $_.Vame
-          $ConfigYmlContent -replace "$Name", "$Value"
+          $ConfigYmlContent = ($ConfigYmlContent -replace "$Name", "$Value")
         }
         $ConfigYmlContent | Set-Content -Path $ConfigYmlFilepath
 
