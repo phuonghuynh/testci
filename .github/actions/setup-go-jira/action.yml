@@ -4,10 +4,10 @@ description: >
   export $JIRA - exec binary path
   generate default config to ".github/tools/go-jira" if input "use-default = true"
 
-inputs:
-  project-name:
-    required : false
-    description: optional project name for JIRA CLI work on, or you need to input when running
+#inputs:
+#  project-name:
+#    required : false
+#    description: optional project name for JIRA CLI work on, or you need to input when running
 
 runs :
   using: "composite"
@@ -36,12 +36,29 @@ runs :
         echo "copy go-jira config to ${{env.USERHOME}}"
         cp -Rf "${{github.action_path}}/.jira.d" "${{env.USERHOME}}"
 
-        ProjectName="${{inputs.project-name}}"
-        File="${{env.USERHOME}}/.jira.d/config.yml"
-        if [ -z "$ProjectName" ]
-        then
-              echo "no project name provided"
-        else
-              echo "project: $ProjectName\n$(cat $File)" > $File
-        fi
-        cat $File
+
+#ProjectName="${{inputs.project-name}}"
+#File="${{env.USERHOME}}/.jira.d/config.yml"
+#if [ -z "$ProjectName" ]
+#then
+#      echo "no project name provided"
+#else
+#      echo "project: $ProjectName\n$(cat $File)" > $File
+#fi
+#cat $File
+
+#echo "find and replace env in go-jira config file"
+#$ConfigYmlFilepath = "${{github.action_path}}/.jira.d/config.yml"
+#$ConfigYmlContent = (Get-Content -Path $ConfigYmlFilepath)
+#gci env:* | sort-object name | ForEach {
+#  $Name = $_.Name
+#  $Value = $_.Vame
+#  $ConfigYmlContent -replace "$Name}", "$Value"
+#}
+#$ConfigYmlContent | Set-Content -Path $ConfigYmlFilepath
+
+# $Name
+# $Value = "$Parts[1]"
+# $Value
+# $ConfigYmlContent = ($ConfigYmlContent -replace "$Name", "$Value")
+# $ConfigYmlContent
