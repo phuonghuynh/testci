@@ -33,9 +33,11 @@ runs :
         echo "find and replace env in go-jira config file"
         $ConfigYmlFilepath = "${{github.action_path}}/.jira.d/config.yml"
         $ConfigYmlContent = (Get-Content -Path $ConfigYmlFilepath)
+        echo "${{env.JIRA_PROJECT}}"
         gci env:* | sort-object name | ForEach {
-          $Name = '$' + $_.Name
-          $Value = $_.Vame
+          $Name = '$' + "$_.Name"
+          echo "$Name"
+          $Value = "$_.Value"
           $ConfigYmlContent = ($ConfigYmlContent -replace "$Name", "$Value")
         }
         $ConfigYmlContent | Set-Content -Path $ConfigYmlFilepath
