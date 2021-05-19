@@ -24,15 +24,17 @@ runs :
         $ROOT = ".github/tools/go-jira"
 
         $JIRA = "$ROOT/jira$EXT"
-        Invoke-WebRequest $GO_JIRA_URL -OutFile (New-Item -Path "$JIRA" -Force)
+        New-Item -Path "$JIRA" -Force
+        Invoke-WebRequest $GO_JIRA_URL -OutFile $JIRA
 
         chmod +x $JIRA
         echo "JIRA=$JIRA" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
         $JIRAD = "${{inputs.jirad}}"
         New-Item -Path "$JIRAD" -Force
-        echo "export go-jira config to $JIRAD"
-        Copy-Item -Path "${{github.action_path}}/.jira.d" -Destination "$JIRAD" -Recurse
+        echo "copy go-jira config to $JIRAD"
+        echo "echo ${{github.action_path}}/.jira.d"
+#        Copy-Item -Path "${{github.action_path}}/.jira.d" -Destination "$JIRAD" -Recurse
 
     - name: ">> test"
       shell: bash
