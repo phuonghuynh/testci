@@ -35,7 +35,7 @@ runs :
         $ConfigYmlContent = (Get-Content -Path $ConfigYmlFilepath)
         "JIRA_PROJECT=${{env.JIRA_PROJECT}}" | ForEach-Object {
           echo "111 $_"
-          $Parts = @("$_" -Split "=")
+          $Parts = "$_".split("=")
           $Name = '$' + "$Parts[0]"
           $Value = "$Parts[1]"
           echo "123 $Name"
