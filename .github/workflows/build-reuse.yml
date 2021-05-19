@@ -16,9 +16,10 @@ env:
 jobs:
   make-reuse:
     strategy:
-      matrix: ${{fromJson(github.event.inputs.run_ons)}}
-
+      matrix:
+        os: ${{fromJson(github.event.inputs.run_ons)}}
     runs-on: ${{matrix.os}}
+
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/setup-preclone-env
