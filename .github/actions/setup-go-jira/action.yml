@@ -22,9 +22,6 @@ runs :
         }
 
         $ROOT = "./.github/tools/go-jira"
-#        New-Item -Path "$ROOT" -Force
-#        $ROOT = ($ROOT | Resolve-Path |  select -ExpandProperty Path)
-#        echo "root= $ROOT"
 
         $JIRA = "$ROOT/jira$EXT"
         New-Item -Path "$JIRA" -Force
@@ -37,8 +34,6 @@ runs :
     - name: create custom command config
       shell: bash
       run: |
-#        JIRAD="${{inputs.jirad}}"
-#        mkdir -p $JIRAD
         echo "copy go-jira config to ${{env.USERHOME}}"
         cp -Rf "${{github.action_path}}/conf/.jira.d" "${{env.USERHOME}}"
 
