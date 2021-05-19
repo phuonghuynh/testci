@@ -4,11 +4,10 @@ description: >
   export $JIRA - exec binary path
   generate default config to ".github/tools/go-jira" if input "use-default = true"
 
-#inputs:
-#  use-jirad-defaults:
-#    required : false
-#    default: 'true'
-#    description: "true" generate default config ".jira.d" for go-jira to "tools"
+inputs:
+  jirad:
+    required : true
+    description: folder where ".jira.d" is copied to
 
 runs :
   using: "composite"
@@ -31,10 +30,10 @@ runs :
         echo "JIRA=$JIRA" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
         echo "export go-jira config"
-        Copy-Item -Path "${{github.action_path}}/conf/*" -Destination "$ROOT/" -Recurse
+        Copy-Item -Path "${{github.action_path}}/.jira.d" -Destination (New-Item -Path "${{inputs.jirad}}" -Force) -Recurse
 
     - name: ">> test"
       shell: bash
       run: |
         $JIRA version
-        ls -all .github/tools/go-jira -R
+        ls -all ${{inputs.jirad}} -R

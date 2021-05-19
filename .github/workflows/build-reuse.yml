@@ -37,6 +37,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/setup-go-jira
+        with:
+          jirad: ./git
 
       - name: ">> debug"
         run: |
