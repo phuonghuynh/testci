@@ -31,7 +31,7 @@ runs :
         echo "JIRA=$JIRA" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
         echo "export go-jira config"
-        Copy-Item -Path "${{github.action_path}}/conf" -Destination "$ROOT/" -Recurse
+        Copy-Item -Path "${{github.action_path}}/conf/*" -Destination "$ROOT/" -Recurse
 
     - name: ">> test"
       shell: bash
