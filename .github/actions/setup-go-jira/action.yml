@@ -36,7 +36,7 @@ runs :
         echo "copy go-jira config to ${{env.USERHOME}}"
         cp -Rf "${{github.action_path}}/.jira.d" "${{env.USERHOME}}"
 
-        ProjectName="${{input.project-name}}"
+        ProjectName="${{inputs.project-name}}"
         File="${{env.USERHOME}}/.jira.d/config.yml"
         if [ -z "$ProjectName" ]
         then
