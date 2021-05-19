@@ -6,9 +6,7 @@ on:
       run_ons:
         description: 'OS list'
         required: true
-        default: '[{"os": "windows-2019", "shell": "cmd"}, {"os": "macos-10.15", "shell": "bash"}]'
-
-#["windows-2019", "macos-10.15"]'
+        default: '["windows-2019", "macos-10.15"]'
 
 env:
   _GITHUB_PAT: ${{secrets._GITHUB_PAT}}
@@ -19,18 +17,7 @@ jobs:
   make-reuse:
     strategy:
       matrix: ${{fromJson(github.event.inputs.run_ons)}}
-#        include:
-#          - os: ${{fromJson(github.event.inputs.run_ons)}}
 
-#        strategy:
-#          matrix:
-#            include:
-#              - node-version: 10.x
-#                site: "prod"
-#                datacenter: "site-a"
-#              - node-version: 12.x
-#                site: "dev"
-#                datacenter: "site-b"
     runs-on: ${{matrix.os}}
     steps:
       - uses: actions/checkout@v2
@@ -40,8 +27,8 @@ jobs:
           jirad-yml: ./.github/workflow/test/config.yml
 
       - name: ">> debug"
-#        if: runner.os == 'windows'
-        shell: ${{matrix.shell}}
+        if: runner.os == 'windows'
+        shell: cmd
         run: |
           ${{env.JIRA}} pp
           ${{env.JIRA}} mine
