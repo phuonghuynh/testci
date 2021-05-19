@@ -21,7 +21,7 @@ runs :
           $EXT = ".exe"
         }
 
-        $PWD = Write-Host $pwd.Path
+        $PWD = (Write-Host $pwd.Path)
         $ROOT = "$PWD/.github/tools/go-jira"
 
         $JIRA = "$ROOT/jira$EXT"
