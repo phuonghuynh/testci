@@ -34,11 +34,12 @@ runs :
         $ConfigYmlFilepath = "${{github.action_path}}/.jira.d/config.yml"
         $ConfigYmlContent = (Get-Content -Path $ConfigYmlFilepath)
         echo "${{env.JIRA_PROJECT}}"
-        gci env:* | sort-object name | ForEach {
-          $Name = '$' + "$_.Name"
-          echo "$Name"
-          $Value = "$_.Value"
+        "JIRA_PROJECT=${{env.JIRA_PROJECT}}" | ForEach {
+          $Parts = @($_ -Split "=")
+          $Name = '$' + "$Parts[0]"
+          $Value = "$Parts[1]"
           $ConfigYmlContent = ($ConfigYmlContent -replace "$Name", "$Value")
+          $ConfigYmlContent
         }
         $ConfigYmlContent | Set-Content -Path $ConfigYmlFilepath
 
