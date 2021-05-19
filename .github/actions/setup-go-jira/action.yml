@@ -1,18 +1,20 @@
-name: setup verNumber and buildNumber
-description: detect and setup env $BUILD_NUMBER, $BRANCH
+name: setup go-jira execuable binary
+description: >
+  download and setup config for go-jira command.
+  export $JIRA - exec binary path
+  generate default config to ".github/tools/go-jira" if input "use-default = true"
 
-inputs:
-  branch:
-    required : false
-    description: missing = event.branch
-  build-number:
-    required : false
-    description: missing = github.run_number
+#inputs:
+#  use-jirad-defaults:
+#    required : false
+#    default: 'true'
+#    description: "true" generate default config ".jira.d" for go-jira to "tools"
 
 runs :
   using: "composite"
   steps:
     - shell: pwsh
+      working-directory: .github/tools/go-jira
       run: |
         $GO_JIRA_URL = "https://github.com/go-jira/jira/releases/download/v1.0.27/jira-darwin-amd64"
         $EXT = ""
@@ -27,5 +29,14 @@ runs :
         chmod +x $JIRA
         echo "JIRA=$JIRA" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
-    - shell: bash
-      run: $JIRA
+#        if ( ${{ inputs.use-jirad-defaults }} -eq "true") {
+#          echo "export go-jira config"
+#          Copy-Item -Path "${{github.action_path}}/.jira.d/*" -Destination "./" -Recurse
+#        }
+
+    - name: ">> test"
+      shell: bash
+      run: |
+        $JIRA version
+#        echo $HOME
+#        ls -all .github/tools/go-jira
