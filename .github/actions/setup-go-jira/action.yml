@@ -27,13 +27,6 @@ runs :
         Invoke-WebRequest $GO_JIRA_URL -OutFile (New-Item -Path "$JIRA" -Force)
         $JIRA = ($JIRA | Resolve-Path |  select -ExpandProperty Path)
         chmod +x $JIRA
-        if ($IsWindows -or $ENV:OS) {
-          $JIRA = ($JIRA -replace '\\', '\\')
-          echo "JIRA_SH=cmd" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-        }
-        else {
-          echo "JIRA_SH=bash" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-        }
         echo "JIRA=$JIRA" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
     - name: create custom command config
