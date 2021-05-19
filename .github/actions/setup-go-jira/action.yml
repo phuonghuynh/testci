@@ -30,11 +30,18 @@ runs :
         chmod +x $JIRA
         echo "JIRA=$JIRA" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
-        $JIRAD = "${{inputs.jirad}}"
-        New-Item -Path "$JIRAD" -Force
-        echo "copy go-jira config to $JIRAD"
-        echo "echo ${{github.action_path}}/.jira.d"
+#        $JIRAD = "${{inputs.jirad}}"
+#        New-Item -Path "$JIRAD" -Force
+#        echo "copy go-jira config to $JIRAD"
+#        echo "echo ${{github.action_path}}/\.jira.d"
 #        Copy-Item -Path "${{github.action_path}}/.jira.d" -Destination "$JIRAD" -Recurse
+    - name: create custom command config
+      shell: bash
+      run: |
+        $JIRAD = "${{inputs.jirad}}"
+        mkdir -p $JIRAD
+        echo "copy go-jira config to $JIRAD"
+        cp -Rf "${{github.action_path}}/conf" "$JIRAD"
 
     - name: ">> test"
       shell: bash

@@ -41,6 +41,7 @@ jobs:
           jirad: ./git
 
       - name: ">> debug"
+        working-directory: ./git
         run: |
           ${{env.JIRA}} --help
           ${{env.JIRA}} pp
