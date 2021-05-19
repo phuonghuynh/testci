@@ -35,13 +35,11 @@ runs :
         $ConfigYmlContent = (Get-Content -Path $ConfigYmlFilepath)
         echo "${{env.JIRA_PROJECT}}"
         "JIRA_PROJECT=${{env.JIRA_PROJECT}}" | ForEach {
-          $Parts = @($_ -Split "=")
+          $Parts = @("$_" -Split "=")
           $Name = '$' + "$Parts[0]"
-          $Name
           $Value = "$Parts[1]"
-          $Value
-          $ConfigYmlContent = ($ConfigYmlContent -replace "$Name", "$Value")
-          $ConfigYmlContent
+          echo "$Name"
+          echo "$Value"
         }
         $ConfigYmlContent | Set-Content -Path $ConfigYmlFilepath
 
@@ -60,3 +58,9 @@ runs :
 #  $ConfigYmlContent -replace "$Name}", "$Value"
 #}
 #$ConfigYmlContent | Set-Content -Path $ConfigYmlFilepath
+
+# $Name
+# $Value = "$Parts[1]"
+# $Value
+# $ConfigYmlContent = ($ConfigYmlContent -replace "$Name", "$Value")
+# $ConfigYmlContent
