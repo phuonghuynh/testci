@@ -26,5 +26,4 @@ jobs:
 
       - name: ">> debug"
         run: |
-          ${{env.JIRA}} help
           ${{env.JIRA}} pp
