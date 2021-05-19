@@ -24,11 +24,10 @@ runs :
         $ROOT = "./.github/tools/go-jira"
 
         $JIRA = "$ROOT/jira$EXT"
-        New-Item -Path "$JIRA" -Force
-        Invoke-WebRequest $GO_JIRA_URL -OutFile $JIRA
+        Invoke-WebRequest $GO_JIRA_URL -OutFile (New-Item -Path "$JIRA" -Force)
         $JIRA = ($JIRA | Resolve-Path |  select -ExpandProperty Path)
-
         chmod +x $JIRA
+        $JIRA = ($JIRA -replace '\\', '\\')
         echo "JIRA=$JIRA" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
     - name: create custom command config
@@ -41,4 +40,4 @@ runs :
       shell: bash
       run: |
         $JIRA version
-        ls -all -R "${{env.USERHOME}}"
+        $JIRA pp
