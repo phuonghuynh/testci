@@ -27,14 +27,14 @@ runs :
         Invoke-WebRequest $GO_JIRA_URL -OutFile (New-Item -Path "$JIRA" -Force)
         $JIRA = ($JIRA | Resolve-Path |  select -ExpandProperty Path)
         chmod +x $JIRA
-        $JIRA = ($JIRA -replace '\\', '\\')
+        $JIRA = ($JIRA -replace '\\', '/')
         echo "JIRA=$JIRA" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
     - name: create custom command config
       shell: bash
       run: |
         echo "copy go-jira config to ${{env.USERHOME}}"
-        cp -Rf "${{github.action_path}}/conf/.jira.d" "${{env.USERHOME}}"
+        cp -Rf "${{github.action_path}}/.jira.d" "${{env.USERHOME}}"
 
     - name: ">> test"
       shell: bash
