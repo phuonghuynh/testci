@@ -4,10 +4,10 @@ description: >
   export $JIRA - exec binary path
   generate default config to ".github/tools/go-jira" if input "use-default = true"
 
-#inputs:
-#  project-name:
-#    required : false
-#    description: optional project name for JIRA CLI work on, or you need to input when running
+inputs:
+  jirad-yml:
+    required : true
+    description: required ".jira.d/config.yml" that copied to "$USERHOME/.jira.d/config.yml"
 
 runs :
   using: "composite"
@@ -29,11 +29,12 @@ runs :
         chmod +x $JIRA
         echo "JIRA=$JIRA" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
-    - name: create custom command config
+    - name: copy inputs jira-config-yml
       shell: bash
       run: |
         echo "copy go-jira config to ${{env.USERHOME}}"
-        cp -Rf "${{github.action_path}}/.jira.d" "${{env.USERHOME}}"
+        mkidr -p "${{env.USERHOME}}/.jira.d"
+        cp -Rf "${{inputs.jirad-yml}}" "${{env.USERHOME}}"
 
 
 #ProjectName="${{inputs.project-name}}"
