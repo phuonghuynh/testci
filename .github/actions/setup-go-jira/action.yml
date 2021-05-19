@@ -37,7 +37,9 @@ runs :
         "JIRA_PROJECT=${{env.JIRA_PROJECT}}" | ForEach {
           $Parts = @($_ -Split "=")
           $Name = '$' + "$Parts[0]"
+          $Name
           $Value = "$Parts[1]"
+          $Value
           $ConfigYmlContent = ($ConfigYmlContent -replace "$Name", "$Value")
           $ConfigYmlContent
         }
