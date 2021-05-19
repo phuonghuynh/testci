@@ -1,4 +1,4 @@
-project: ${{env.JIRA_PROJECT}}
+project: __JIRA_PROJECT__
 endpoint: https://datalocker.atlassian.net
 user: phuonghqh@gmail.com
 authentication-method: api-token
