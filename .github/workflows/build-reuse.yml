@@ -27,3 +27,4 @@ jobs:
       - name: ">> debug"
         run: |
           ${{env.JIRA}} pp
+          ${{env.JIRA}} mine
