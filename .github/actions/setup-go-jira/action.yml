@@ -35,9 +35,3 @@ runs :
       run: |
         echo "copy go-jira config to ${{env.USERHOME}}"
         cp -Rf "${{github.action_path}}/.jira.d" "${{env.USERHOME}}"
-
-    - name: ">> test"
-      shell: bash
-      run: |
-        $JIRA version
-        $JIRA pp
