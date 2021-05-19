@@ -1,4 +1,4 @@
-name: abc
+name: build-nodejs
 
 on:
   workflow_dispatch:
