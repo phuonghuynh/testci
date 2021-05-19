@@ -27,4 +27,4 @@ jobs:
 
       - name: ">> debug"
         run: |
-          ${{env.JIRA}} att --help
+          node ${{env.JIRA_NODE_SCRIPT}}/test.js

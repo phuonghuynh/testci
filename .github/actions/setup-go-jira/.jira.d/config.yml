@@ -28,8 +28,13 @@ custom-commands:
         help: upload file locations (repeatable)
         required: true
         repeat: true
+#    args:
+#      - name: ISSUE
+#        help: issue-id to upload attifacts
+#        required: true
     script: |
-      ${JIRA} attach create {{range options.file}} {{options.id}} {{.}} {{end}}
+#      STDOUT=$(${JIRA} attach create {{range options.file}} {{options.id}} {{.}} {{end}})
+#      ${JIRA} comment {{options.id}} -m "build for branch $BRANCH:\\n$STDOUT" --noedit
 
 #      ${JIRA} attach create {{options.id}} \
 #        {{range options.file}} --file {{.}}{{end}}

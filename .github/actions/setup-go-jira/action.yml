@@ -29,11 +29,14 @@ runs :
         chmod +x $JIRA
         echo "JIRA=$JIRA" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
-    - name: copy inputs jira-config-yml
-      shell: bash
-      run: |
-        echo "copy default go-jira config to ${{env.USERHOME}}"
-        cp -Rf "${{github.action_path}}/.jira.d" "${{env.USERHOME}}"
+        $JIRA_NODE_SCRIPT = ("${{github.action_path}}/node" | Resolve-Path |  select -ExpandProperty Path)
+        echo "JIRA_NODE_SCRIPT=$JIRA_NODE_SCRIPT" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+#    - name: copy inputs jira-config-yml
+#      shell: bash
+#      run: |
+#        echo "copy default go-jira config to ${{env.USERHOME}}"
+#        cp -Rf "${{github.action_path}}/.jira.d" "${{env.USERHOME}}"
 
 
 
