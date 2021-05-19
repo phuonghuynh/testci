@@ -38,7 +38,7 @@ runs :
     - name: create custom command config
       shell: bash
       run: |
-        $JIRAD = "${{inputs.jirad}}"
+        $JIRAD="${{inputs.jirad}}"
         mkdir -p $JIRAD
         echo "copy go-jira config to $JIRAD"
         cp -Rf "${{github.action_path}}/conf" "$JIRAD"
