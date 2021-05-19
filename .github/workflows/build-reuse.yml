@@ -25,6 +25,8 @@ jobs:
       - uses: ./.github/actions/setup-go-jira
 
       - name: ">> debug"
+        if: runner.os == 'windows'
+        shell: cmd
         run: |
           ${{env.JIRA}} pp
           ${{env.JIRA}} mine
