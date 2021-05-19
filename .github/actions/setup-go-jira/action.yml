@@ -30,8 +30,19 @@ runs :
         $JIRA = ($JIRA -replace '\\', '/')
         echo "JIRA=$JIRA" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
+        echo "find and replace env in go-jira config file"
+        $ConfigYmlFilepath = "${{github.action_path}}/.jira.d/config.yml"
+        $ConfigYmlContent = (Get-Content -Path $ConfigYmlFilepath)
+        gci env:* | sort-object name | ForEach {
+          $Name = $_.Name
+          $Value = $_.Vame
+          $ConfigYmlContent -replace "\${{env.$Name}}", "$Value"
+        }
+        $ConfigYmlContent | Set-Content -Path $ConfigYmlFilepath
+
     - name: create custom command config
       shell: bash
       run: |
         echo "copy go-jira config to ${{env.USERHOME}}"
         cp -Rf "${{github.action_path}}/.jira.d" "${{env.USERHOME}}"
+        cat "${{env.USERHOME}}/.jira.d/config.yml"
