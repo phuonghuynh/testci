@@ -21,7 +21,8 @@ on:
 
 env:
   _GITHUB_PAT: ${{secrets._GITHUB_PAT}}
-  JIRA_PROJECT: "SCM"
+  JIRA_PROJECT: ${{secrets.TEST_JIRA_PROJECT}}
+  JIRA_API_TOKEN: ${{secrets.JIRA_API_TOKEN}}
 #  VER_NUMBER: ${{github.event.inputs.version}}
 #  BUILD_NUMBER: ${{github.event.inputs.build_number}}
 #  WIN_CODESIGN_BASE64: ${{secrets.WIN_CODESIGN_BASE64}}
@@ -36,10 +37,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/setup-go-jira
-#        with:
-#          use-jirad-defaults: true
 
       - name: ">> debug"
         run: |
           ${{env.JIRA}} --help
-          echo ${{env.HOME}}
+          ${{env.JIRA}} pp
