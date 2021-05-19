@@ -19,10 +19,10 @@ custom-commands:
       fi
 
   - name: att
-    help: attact built-atifact to issue {id}
+    help: attact "--file" to "--issue-id"
     options:
-      - name: id
-        help: created issue to upload attifacts
+      - name: issue-id
+        help: issue-id to upload attifacts
         required: true
       - name: file
         help: upload file locations (repeatable)
