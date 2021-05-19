@@ -1,9 +1,13 @@
-#project: $JIRA_PROJECT
-#endpoint: https://datalocker.atlassian.net
-#user: phuonghqh@gmail.com
-#authentication-method: api-token
+project: $JIRA_PROJECT
+endpoint: https://datalocker.atlassian.net
+user: phuonghqh@gmail.com
+authentication-method: api-token
 
 custom-commands:
+  - name: pp
+    help: print the name of the configured project
+    script: "echo $JIRA_PROJECT"
+
   - name: att
     help: attact built-atifact to issue {id}
     options:

@@ -19,8 +19,9 @@ on:
 #        description : 'build number, empty=run_id'
 #        required : false
 
-#env:
-#  _GITHUB_PAT: ${{secrets._GITHUB_PAT}}
+env:
+  _GITHUB_PAT: ${{secrets._GITHUB_PAT}}
+  JIRA_PROJECT: "SCM"
 #  VER_NUMBER: ${{github.event.inputs.version}}
 #  BUILD_NUMBER: ${{github.event.inputs.build_number}}
 #  WIN_CODESIGN_BASE64: ${{secrets.WIN_CODESIGN_BASE64}}
