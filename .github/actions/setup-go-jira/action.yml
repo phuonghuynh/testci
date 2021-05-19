@@ -33,13 +33,13 @@ runs :
         echo "find and replace env in go-jira config file"
         $ConfigYmlFilepath = "${{github.action_path}}/.jira.d/config.yml"
         $ConfigYmlContent = (Get-Content -Path $ConfigYmlFilepath)
-        echo "${{env.JIRA_PROJECT}}"
-        "JIRA_PROJECT=${{env.JIRA_PROJECT}}" | ForEach {
+        "JIRA_PROJECT=${{env.JIRA_PROJECT}}" | ForEach-Object {
+          echo "111 $_"
           $Parts = @("$_" -Split "=")
           $Name = '$' + "$Parts[0]"
           $Value = "$Parts[1]"
-          echo "$Name"
-          echo "$Value"
+          echo "123 $Name"
+          echo "234 $Value"
         }
         $ConfigYmlContent | Set-Content -Path $ConfigYmlFilepath
 
