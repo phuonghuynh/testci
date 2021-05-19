@@ -7,18 +7,9 @@ on:
         description: 'branch name'
         required: true
         default: PB-1124-GHA-impl
-      version_number:
-        description: 'version number'
-        required: true
-        default: 1.5.0
-      build_number:
-        description: 'BUILD_ID will be used if missing'
-        required: false
 
 env:
   BRANCH: ${{github.event.inputs.branch}}
-  VER_NUMBER: ${{github.event.inputs.version_number}}
-  BUILD_NUMBER: ${{github.event.inputs.build_number}}
   WIN_CODESIGN_BASE64 : ${{secrets.WIN_CODESIGN_BASE64}}
   WIN_CODESIGN_PASSWORD : ${{secrets.WIN_CODESIGN_PASSWORD}}
 
@@ -32,6 +23,7 @@ jobs:
 
       - uses: ./.github/actions/setup-preclone-env
       - uses: ./.github/actions/win-install-signing-cert
+      - uses: ./.github/actions/setup-go-jira
 
       - name: setup SSH
         uses: shimataro/ssh-key-action@v2
@@ -54,12 +46,6 @@ jobs:
         working-directory: git
         continue-on-error: true
         run: ./build.ps1 -Sign
-
-      - name: ">> debug"
-        shell: bash
-        working-directory: git
-        run: |
-          ls -all sign
 
       - name: upload artifacts
         uses: actions/upload-artifact@v2
