@@ -3,39 +3,13 @@ user: phuonghqh@gmail.com
 authentication-method: api-token
 
 custom-commands:
-#  - name: pp
-#    help: print the name of the configured project
-#    script: "echo $JIRA_PROJECT"
-
-#  - name: mine
-#    help: display issues assigned to me
-#    script: |-
-#      if [ -n "$JIRA_PROJECT" ]; then
-#          # if `project: ...` configured just list the issues for current project
-#          ${JIRA} list --template table --query "resolution = unresolved and assignee=currentuser() and project = $JIRA_PROJECT ORDER BY priority asc, created"
-#      else
-#          # otherwise list issues for all project
-#          ${JIRA} list --template table --query "resolution = unresolved and assignee=currentuser() ORDER BY priority asc, created"
-#      fi
-
-  - name: att
-    help: attact "--file" to "--issue-id"
-    options:
-      - name: issue-id
-        help: issue-id to upload attifacts
-        required: true
-      - name: file
-        help: upload file locations (repeatable)
-        required: true
-        repeat: true
-#    args:
-#      - name: ISSUE
-#        help: issue-id to upload attifacts
-#        required: true
-    script: |
-#      STDOUT=$(${JIRA} attach create {{range options.file}} {{options.id}} {{.}} {{end}})
-#      ${JIRA} comment {{options.id}} -m "build for branch $BRANCH:\\n$STDOUT" --noedit
-
-#      ${JIRA} attach create {{options.id}} \
-#        {{range options.file}} --file {{.}}{{end}}
-
+  - name: mine
+    help: display issues assigned to me
+    script: |-
+      if [ -n "$JIRA_PROJECT" ]; then
+          # if `project: ...` configured just list the issues for current project
+          ${JIRA} list --template table --query "resolution = unresolved and assignee=currentuser() and project = $JIRA_PROJECT ORDER BY priority asc, created"
+      else
+          # otherwise list issues for all project
+          ${JIRA} list --template table --query "resolution = unresolved and assignee=currentuser() ORDER BY priority asc, created"
+      fi

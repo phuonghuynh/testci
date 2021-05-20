@@ -1,0 +1,15 @@
+{
+  "name": "lazi",
+  "description": "node-cli support GHA for DL projects, named lazi",
+  "license": "closed",
+  "version": "0.0.1",
+  "bin": {
+    "lazi": "bin/index.js"
+  },
+  "dependencies": {
+    "dotenv": "^9.0.2",
+    "fs-extra": "^10.0.0",
+    "yargs": "^17.0.1",
+    "debug": "^4.3.1"
+  }
+}
