@@ -8,9 +8,6 @@ exports.builder = {
   },
 };
 
-const debug = require('debug')('hello');
-
 exports.handler = (argv) => {
   console.log('console log hello', argv.name);
-  debug(`hello`, argv.name);
 };

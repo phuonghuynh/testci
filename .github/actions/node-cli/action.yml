@@ -1,0 +1,14 @@
+name: setup node-cli
+description: setup node-cli, named "lazi", to help GHA tasks
+
+runs:
+  using: "composite"
+  steps:
+    - shell: pwsh
+      working-directory: ${{github.action_path}}
+      run: |
+        npm ci
+        npm pack
+        $PACK = (Resolve-Path "./*.zip" | Select -ExpandProperty Path)
+        npm i -g $PACK
+        npx lazi --help
