@@ -16,7 +16,7 @@ runs:
         echo "123 $BUILD_NUMBER"
         echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
 
-        VERSIONSTR="${{env.VER_NUMBER}}"."${{env.BUILD_NUMBER}}"
+        VERSIONSTR="${{env.VER_NUMBER}}.${{env.BUILD_NUMBER}}"
         echo "VERSIONSTR=$VERSIONSTR" >> $GITHUB_ENV
 
     - shell: pwsh
