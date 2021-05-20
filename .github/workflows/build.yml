@@ -1,0 +1,55 @@
+name: build-nodejs
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'branch name'
+        required: true
+        default: PB-1124-GHA-impl
+
+env:
+  BRANCH: ${{github.event.inputs.branch}}
+  WIN_CODESIGN_BASE64 : ${{secrets.WIN_CODESIGN_BASE64}}
+  WIN_CODESIGN_PASSWORD : ${{secrets.WIN_CODESIGN_PASSWORD}}
+
+jobs:
+  msbuild:
+    runs-on: windows-2019
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - uses: ./.github/actions/setup-preclone-env
+      - uses: ./.github/actions/win-install-signing-cert
+      - uses: ./.github/actions/setup-go-jira
+
+      - name: setup SSH
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.ID_RSA_BITBUCKET }}
+          name: id_rsa_bitbucket
+          known_hosts: $${{ secrets.SSH_KNOWN_HOSTS }}
+          config: ${{ secrets.SSH_CONFIG }}
+
+      - name: clone source to "./git"
+        shell: bash
+        run: |
+          git clone --single-branch \
+             --branch ${{env.BRANCH}} \
+             --depth 1 --recurse-submodules \
+             ${{secrets.PBWINDRIVER_REPO}} \
+             git
+
+      - name: ">> make build"
+        working-directory: git
+        continue-on-error: true
+        run: ./build.ps1 -Sign
+
+      - name: upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifacts-${{runner.os}}
+          path: |
+            ./git/artifacts
