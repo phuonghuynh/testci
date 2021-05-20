@@ -1,4 +1,5 @@
-exports.command = 'iss-attachments <id>';
+exports.command = 'iss-attachments';
+exports.aliases = 'ia'
 exports.desc = 'issue attach files, often use for "build-issue"';
 
 exports.builder = {
@@ -7,12 +8,12 @@ exports.builder = {
     desc: 'issue-id in full format, i.e. SCM-226',
     require: true,
   },
-  // file: {
-  //   array: true,
-  //   string: true,
-  //   desc: 'list of files path.resolve(xxx) to upload',
-  //   require: true
-  // }
+  file: {
+    array: true,
+    string: true,
+    desc: 'list of files path.resolve(xxx) to upload',
+    require: true
+  }
 }
 
 const debug = require('debug')('JIRA');
