@@ -10,7 +10,7 @@ on:
       branch:
         description: 'branch name'
         required: false
-        default: 'dev'
+        default: 'SAFECRYPT-204-auto-unlock'
       version:
         description: 'release version str (1.0.1)'
         required: true
