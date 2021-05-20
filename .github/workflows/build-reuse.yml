@@ -23,8 +23,3 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/setup-preclone-env
-      - uses: ./.github/actions/setup-go-jira
-
-      - name: ">> debug"
-        run: |
-          node ${{env.JIRA_NODE_SCRIPT}}/test.js
