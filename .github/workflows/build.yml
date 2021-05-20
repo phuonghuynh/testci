@@ -52,7 +52,7 @@ jobs:
       - uses: ./.github/actions/node-cli
 
       - name: import mac-app signature ceritifcate
-        if: ((!${{env.DISABLE_CODESIGN}} == "true") && (runner.os == 'macOS'))
+        if: ((${{env.DISABLE_CODESIGN}} != "true") && (runner.os == 'macOS'))
         uses: apple-actions/import-codesign-certs@v1
         with:
           keychain: temp
@@ -60,7 +60,7 @@ jobs:
           p12-password: ${{ secrets.MAC_CODESIGN_PASSWORD }}
 
       - name: install win cert for siging
-        if: ((!${{env.DISABLE_CODESIGN}} == "true") && (runner.os == 'Windows'))
+        if: ((${{env.DISABLE_CODESIGN}} != "true") && (runner.os == 'Windows'))
         uses: ./.github/actions/win-install-signing-cert
 
       - name: clone source
