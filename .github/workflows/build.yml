@@ -131,7 +131,8 @@ jobs:
       - name: upload artifacts
         working-directory: git
         run: |
-          $DestinationPath = "SafeCrypt-${{env.VERSIONSTR}}-${{runner.os}}.zip"
+          $DestinationPath = "SafeCrypt-gha-${{github.run_number}}-${{runner.os}}.zip"
+          echo "check file [artifacts/updates.json] to get suggested updater server upload link"  > "README.txt"
           $Compress = @{
             Path = "./artifacts", ".ant/log"
             CompressionLevel = "Fastest"
