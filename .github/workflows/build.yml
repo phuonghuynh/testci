@@ -109,12 +109,6 @@ jobs:
         shell: pwsh
         working-directory: git
         run: |
-          $DestinationPath = "SafeCrypt-gharun-${{github.run_number}}-${{runner.os}}.zip"
-          echo "check file [artifacts/updates.json] to get suggested updater server upload link"  > "README.txt"
-          Compress-Archive `
-            -Path "./artifacts", "./.ant/log" `
-            -CompressionLevel "Fastest" `
-            -DestinationPath "$DestinationPath"
           npx lazi jira upload-build-assets --id SCM-228 -f README.md
 
       - name: exit 1 if build failed
