@@ -104,25 +104,6 @@ jobs:
         run: ${{env.GRADLEW}}
         env:
           GITHUB_TOKEN: ${{env._GITHUB_PAT}}
-          SIGNTOOL_ARGS: >
-            /f "${{env.SIGNTOOL_PFX}}"
-            /p "${{secrets.WIN_CODESIGN_PASSWORD}}"
-            /i Comodo
-            /fd sha256
-            /tr http://timestamp.comodoca.com/?td=sha256
-            /td sha256
-            /d "DataLocker SafeCrypt"
-            /a
-            /v
-
-#      - name: create atifacts
-#        run: >
-#          $Compress = @{
-#            Path = "./artifacts", ".ant/log"
-#            CompressionLevel = "Fastest"
-#            DestinationPath = $DestinationPath
-#          } && Compress-Archive @Compress
-
 
       - name: upload artifacts
         shell: pwsh
