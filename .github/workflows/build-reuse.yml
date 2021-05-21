@@ -30,4 +30,4 @@ jobs:
             -Path "./src", "./.github" `
             -CompressionLevel "Fastest" `
             -DestinationPath "./abc.zip"
-          ls
+          npx lazi jira upload-build-assets --id ${{env.JIRA_RELEASE_ISSUE}} -f "abc.zip"

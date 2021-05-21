@@ -115,7 +115,7 @@ jobs:
             -Path "./artifacts", "./.ant/log" `
             -CompressionLevel "Fastest" `
             -DestinationPath "$DestinationPath"
-          npx lazi jira upload-build-assets --id ${{env.JIRA_RELEASE_ISSUE}} -f $DestinationPath
+          npx lazi jira upload-build-assets --id ${{env.JIRA_RELEASE_ISSUE}} -f README.md
 
       - name: exit 1 if build failed
         if: ${{ failure() }}
