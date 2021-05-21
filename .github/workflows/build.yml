@@ -129,12 +129,10 @@ jobs:
         run: |
           $DestinationPath = "SafeCrypt-gharun-${{github.run_number}}-${{runner.os}}.zip"
           echo "check file [artifacts/updates.json] to get suggested updater server upload link"  > "README.txt"
-          $Compress = @{ `
-            Path = "./artifacts", ".ant/log" `
-            CompressionLevel = "Fastest" `
-            DestinationPath = $DestinationPath `
-          }
-          Compress-Archive @Compress
+          Compress-Archive `
+            -Path "./artifacts,./.ant/log" `
+            -CompressionLevel "Fastest" `
+            -DestinationPath "$DestinationPath"
           get-childitem "." -recurse -force | where-object { $_.FullName.Length -ge 256 } | select-object FullName | format-list
 #          npx lazi jira uba --id ${{env.JIRA_RELEASE_ISSUE}} -f $DestinationPath
 

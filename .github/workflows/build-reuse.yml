@@ -25,4 +25,8 @@ jobs:
       - uses: ./.github/actions/setup-preclone-env
 
       - run: |
-          echo "123 1 $VERSIONSTR"
+          Compress-Archive `
+            -Path "./src,./.github" `
+            -CompressionLevel "Fastest" `
+            -DestinationPath "./abc.zip"
+          get-childitem "." -recurse -force | where-object { $_.FullName.Length -ge 256 } | select-object FullName | format-list
