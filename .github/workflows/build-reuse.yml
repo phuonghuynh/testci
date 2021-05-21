@@ -23,6 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/setup-preclone-env
+      - uses: ./.github/actions/node-cli
 
       - shell: pwsh
         run: |
