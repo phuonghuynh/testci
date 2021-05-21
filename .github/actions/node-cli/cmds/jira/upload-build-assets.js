@@ -28,8 +28,8 @@ exports.builder = (yargs) => {
           console.warn(">> using default issue-id", argv.id);
         }
         else {
-          console.error("require jira issue id for upload assets");
-          throw 'require arg "--id"';
+          console.error(`require arg "--id"`);
+          return false;
         }
       }
 
@@ -42,15 +42,16 @@ exports.handler = async (argv) => {
   const id = argv.id;
   const files = argv.file;
 
-  const jira = require('../../conf/jira/_api');
+  const jira = require('../../conf/jira/api');
 
   const links = [];
   for (let file of files) {
     file = path.resolve(file);
     const reply = await jira.addAttachmentOnIssue(id, fs.createReadStream(file));
     links.push(reply[0].content);
+    console.info(`>> uploaded`, file);
   }
 
   console.log(">> add build comment", id);
-  await jira.addComment(id, require('../../conf/jira/_build-comment')(links));
+  await jira.addComment(id, require('../../conf/jira/build-comment')(links));
 };
