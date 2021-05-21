@@ -109,7 +109,7 @@ jobs:
         shell: pwsh
         working-directory: git
         run: |
-          npx lazi jira upload-build-assets --id SCM-228 -f README.md
+          npx lazi jira upload-build-assets --id ${{env.JIRA_RELEASE_ISSUE}} -f README.md
 
       - name: exit 1 if build failed
         if: ${{ failure() }}
