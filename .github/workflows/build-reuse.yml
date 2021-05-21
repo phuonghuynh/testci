@@ -26,7 +26,7 @@ jobs:
 
       - run: |
           Compress-Archive `
-            -Path "./src,./.github" `
+            -Path "./src", "./.github" `
             -CompressionLevel "Fastest" `
             -DestinationPath "./abc.zip"
           get-childitem "." -recurse -force | where-object { $_.FullName.Length -ge 256 } | select-object FullName | format-list
