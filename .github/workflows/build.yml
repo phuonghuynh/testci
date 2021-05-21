@@ -14,6 +14,7 @@ on:
       version:
         description: 'release version str (1.0.1)'
         required: true
+        default: 1.2.3
       build_number:
         description: 'build number, empty=run_id'
         required: false
