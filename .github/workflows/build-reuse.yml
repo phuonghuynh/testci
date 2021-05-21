@@ -10,7 +10,7 @@ on:
 
 env:
   _GITHUB_PAT: ${{secrets._GITHUB_PAT}}
-  JIRA_PROJECT: ${{secrets.TEST_JIRA_PROJECT}}
+  JIRA_API_EMAIL: ${{secrets.JIRA_API_EMAIL}}
   JIRA_API_TOKEN: ${{secrets.JIRA_API_TOKEN}}
 
 jobs:
