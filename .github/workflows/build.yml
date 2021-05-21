@@ -98,12 +98,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-scmnpm-
 
-      - name: ">> run gradlew build"
-        continue-on-error: true
-        working-directory: git
-        run: ${{env.GRADLEW}}
-        env:
-          GITHUB_TOKEN: ${{env._GITHUB_PAT}}
+#      - name: ">> run gradlew build"
+#        continue-on-error: true
+#        working-directory: git
+#        run: ${{env.GRADLEW}}
+#        env:
+#          GITHUB_TOKEN: ${{env._GITHUB_PAT}}
 
       - name: upload artifacts
         shell: pwsh
