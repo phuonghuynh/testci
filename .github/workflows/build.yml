@@ -98,18 +98,24 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-scmnpm-
 
-#      - name: ">> run gradlew build"
-#        continue-on-error: true
-#        working-directory: git
-#        run: ${{env.GRADLEW}}
-#        env:
-#          GITHUB_TOKEN: ${{env._GITHUB_PAT}}
+      - name: ">> run gradlew build"
+        continue-on-error: true
+        working-directory: git
+        run: ${{env.GRADLEW}}
+        env:
+          GITHUB_TOKEN: ${{env._GITHUB_PAT}}
 
       - name: upload artifacts
         shell: pwsh
         working-directory: git
         run: |
-          npx lazi jira upload-build-assets --id ${{env.JIRA_RELEASE_ISSUE}} -f README.md
+          $DestinationPath = "SafeCrypt-gharun-${{github.run_number}}-${{runner.os}}.zip"
+          echo "check file [artifacts/updates.json] to get suggested updater server upload link"  > "README.txt"
+          Compress-Archive `
+            -Path "./artifacts", "./.ant/log" `
+            -CompressionLevel "Fastest" `
+            -DestinationPath "$DestinationPath"
+          npx lazi jira upload-build-assets --id "${{env.JIRA_RELEASE_ISSUE}}" -f "$DestinationPath"
 
       - name: exit 1 if build failed
         if: ${{ failure() }}
