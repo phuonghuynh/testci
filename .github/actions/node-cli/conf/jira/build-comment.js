@@ -1,3 +1,3 @@
 module.exports = (links) => {
-  return `Build links:\n ${links.join("\n")}`;
+  return `(${require('os').platform()})\nBuild links:\n ${links.join("\n")}`;
 }
