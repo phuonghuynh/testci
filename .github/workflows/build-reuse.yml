@@ -24,7 +24,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/setup-preclone-env
 
-      - shell: powershell
+      - shell: pwsh
         run: |
           Compress-Archive `
             -Path "./src", "./.github" `
