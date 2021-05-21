@@ -25,7 +25,6 @@ exports.builder = (yargs) => {
         const idFile = path.resolve("./.jira.d/.releaseissue");
         if (fs.existsSync(idFile)) {
           argv.id = fs.readFileSync(idFile).toString();
-          console.warn(">> using default issue-id", argv.id);
         }
         else {
           console.error(`require arg "--id"`);
@@ -42,6 +41,8 @@ exports.handler = async (argv) => {
   const id = argv.id;
   const files = argv.file;
 
+  console.info(">> using issue-id", argv.id);
+
   const jira = require('../../conf/jira/api');
 
   const links = [];
@@ -52,6 +53,5 @@ exports.handler = async (argv) => {
     console.info(`>> uploaded`, file);
   }
 
-  console.log(">> add build comment", id);
   await jira.addComment(id, require('../../conf/jira/build-comment')(links));
 };
