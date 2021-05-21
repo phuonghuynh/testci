@@ -24,7 +24,7 @@ exports.builder = (yargs) => {
       if (!id) {
         const idFile = path.resolve("./.jira.d/.releaseissue");
         if (fs.existsSync(idFile)) {
-          argv.id = fs.readFileSync(idFile).toString();
+          argv.id = fs.readFileSync(idFile).toString().trim();
         }
         else {
           console.error(`require arg "--id"`);
