@@ -10,6 +10,8 @@
     "dotenv": "^9.0.2",
     "fs-extra": "^10.0.0",
     "yargs": "^15.0.2",
-    "jira-client": "^6.21.1"
+    "jira-client": "^6.21.1",
+    "xml2js": "^0.4.23",
+    "semver": "^7.3.5"
   }
 }
