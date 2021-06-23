@@ -21,4 +21,4 @@ jobs:
           submodules: true
 
       - run: |
-          echo "${{toJSON(github.event)}}"
+          echo "${{github.event_name}}"
