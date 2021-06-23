@@ -23,6 +23,10 @@ exports.builder = (yargs) => {
         throw `--file is required`
       }
 
+      // file = path.join(file, 'src', 'Props', 'OEM', 'DataLocker.props');
+      // if (!fs.existsSync(file)) {
+      //   throw `file ${file} doesn't existed`;
+      // }
 
       argv.file = file;
 
@@ -33,18 +37,17 @@ exports.builder = (yargs) => {
 exports.handler = async (argv) => {
   let file = path.resolve(argv.file);
   let xml = fs.readFileSync(file, 'utf8');
-  const json = JSON.parse(xml2json.toJson(xml));
+  const json = JSON.parse(xml2json.toJson(xml, {reversible: true}));
 
   const inputVersion = process.env.VER_NUMBER;
   const inputBuildNumber = process.env.BUILD_NUMBER;
-  const coerceVersion = semver.coerce(inputVersion); //.major , .minor, .patch
-  // const version = semver.valid(coerceVersion); // '42.6.7'
+  const coerceVersion = semver.coerce(inputVersion);
 
-  _.set(json, 'Project.PropertyGroup.MAJORVER', coerceVersion.major);
-  _.set(json, 'Project.PropertyGroup.MINORVER', coerceVersion.minor);
-  _.set(json, 'Project.PropertyGroup.SPVER', coerceVersion.patch);
-  _.set(json, 'Project.PropertyGroup.BUILDNUM', inputBuildNumber);
+  _.set(json, 'Project.PropertyGroup.MAJORVER.$t', coerceVersion.major);
+  _.set(json, 'Project.PropertyGroup.MINORVER.$t', coerceVersion.minor);
+  _.set(json, 'Project.PropertyGroup.SPVER.$t', coerceVersion.patch);
+  _.set(json, 'Project.PropertyGroup.BUILDNUM.$t', inputBuildNumber);
 
-  xml = xml2json.toXml(json);
+  xml = xml2json.toXml(JSON.stringify(json));
   fs.writeFileSync(file, xml, {encoding: 'utf8'});
 }

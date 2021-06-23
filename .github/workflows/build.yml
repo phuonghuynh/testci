@@ -6,35 +6,7 @@ on:
       run_ons:
         description: 'OS list'
         required: true
-        default: '["windows-2019", "macos-10.15"]'
-      branch:
-        description: 'branch name'
-        required: false
-        default: 'SAFECRYPT-204-auto-unlock'
-      version:
-        description: 'release version str (1.0.1)'
-        required: true
-        default: 1.2.3
-      build_number:
-        description: 'build number, empty=run_id'
-        required: false
-      jira_release_issue:
-        required: false
-        description: jira-issue-id to upload artifacts, default is "[project-root]/.jira.d/.releaseissue"
-      update_server_url:
-        description: 'update server url'
-        required: false
-        default: https://media.datalocker.com/downloads/safecrypt/updates
-
-env:
-  _GITHUB_PAT: ${{secrets._GITHUB_PAT}}
-  VER_NUMBER: ${{github.event.inputs.version}}
-  BRANCH: ${{github.event.inputs.branch}}
-  BUILD_NUMBER: ${{github.event.inputs.build_number}}
-  UPDATE_SERVER: ${{github.event.inputs.update_server_url}}
-  JIRA_RELEASE_ISSUE: ${{github.event.inputs.jira_release_issue}}
-  JIRA_API_EMAIL: ${{secrets.JIRA_API_EMAIL}}
-  JIRA_API_TOKEN: ${{secrets.JIRA_API_TOKEN}}
+        default: '["macos-10.15"]'
 
 jobs:
   make_scm_client:
@@ -48,75 +20,5 @@ jobs:
         with:
           submodules: true
 
-      - uses: ./.github/actions/setup-preclone-env
-      - uses: ./.github/actions/node-cli
-
-#      - name: import mac-app signature ceritifcate
-#        if: runner.os == 'macOS'
-#        uses: apple-actions/import-codesign-certs@v1
-#        with:
-#          keychain: temp
-#          p12-file-base64: ${{ secrets.MAC_APP_CODESIGN_BASE64 }}
-#          p12-password: ${{ secrets.MAC_CODESIGN_PASSWORD }}
-#
-#      - name: install win cert for siging
-#        uses: ./.github/actions/win-install-signing-cert
-
-      - name: clone source
-        uses: actions/checkout@v2
-        with:
-          repository: ${{secrets.SCM_REPO}}
-          token: ${{env._GITHUB_PAT}}
-          ref: ${{env.BRANCH}}
-          path: git
-          submodules: true
-
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '10'
-
-      - name: calculate cache-hash
-        shell: bash
-        run: |
-          CACHE_HASH=${{hashFiles('**/package.json')}}
-          echo "CACHE_HASH=$CACHE_HASH" >> $GITHUB_ENV
-
-      - name: get npm cache directory
-        shell: bash
-        id: npm-cache
-        run: |
-          echo "::set-output name=dir::$(npm config get cache)"
-          CACHE_DIR=$(npm config get cache)
-          echo "CACHE_DIR=$CACHE_DIR" >> $GITHUB_ENV
-      - name: restore cache
-        uses: actions/cache@v2.1.3
-        with:
-          path: |
-            ${{ env.CACHE_DIR }}
-            **/node_modules
-          key: ${{ runner.os }}-scmnpm-${{env.CACHE_HASH}}
-          restore-keys: |
-            ${{ runner.os }}-scmnpm-
-
-      - name: ">> run gradlew build"
-        continue-on-error: true
-        working-directory: git
-        run: ${{env.GRADLEW}}
-        env:
-          GITHUB_TOKEN: ${{env._GITHUB_PAT}}
-
-      - name: upload artifacts
-        shell: pwsh
-        working-directory: git
-        run: |
-          $DestinationPath = "SafeCrypt-gharun-${{github.run_number}}-${{runner.os}}.zip"
-          echo "check file [artifacts/updates.json] to get suggested updater server upload link"  > "README.txt"
-          Compress-Archive `
-            -Path "./artifacts", "./.ant/log" `
-            -CompressionLevel "Fastest" `
-            -DestinationPath "$DestinationPath"
-          npx lazi jira upload-build-assets --id "${{env.JIRA_RELEASE_ISSUE}}" -f "$DestinationPath"
-
-      - name: exit 1 if build failed
-        if: ${{ failure() }}
-        run: exit 1
+      - run: |
+          echo ${{github.event.name}}

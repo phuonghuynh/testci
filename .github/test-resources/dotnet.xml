@@ -1,0 +1,16 @@
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup Label="UserMacros">
+        <COMPANY_NAME>XXX</COMPANY_NAME>
+        <PRODUCT_NAME>XXX YYY</PRODUCT_NAME>
+        <COPYRIGHT>©XXX</COPYRIGHT>
+        <MAJORVER>1</MAJORVER>
+        <MINORVER>2</MINORVER>
+        <SPVER>3</SPVER>
+        <TRAY_TARGET_NAME>XXX</TRAY_TARGET_NAME>
+        <SERVICE_TARGET_NAME>XXX</SERVICE_TARGET_NAME>
+        <CONSOLE_TARGET_NAME>XXX</CONSOLE_TARGET_NAME>
+        <DRIVER_TARGET_NAME>XXX</DRIVER_TARGET_NAME>
+        <DRIVER_DEVICE_NODE>XXX\XXX</DRIVER_DEVICE_NODE>
+        <BUILDNUM>222</BUILDNUM>
+    </PropertyGroup>
+</Project>
